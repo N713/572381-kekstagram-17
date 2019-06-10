@@ -13,8 +13,8 @@ var COMMENTS = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
 
-var pictures = document.querySelector('.pictures');
-var randomPictureTemplate = document.querySelector('#picture').
+var picturesSection = document.querySelector('.pictures');
+var pictureTemplate = document.querySelector('#picture').
   content.querySelector('.picture');
 
 var getRandomArrayElement = function (array) {
@@ -54,13 +54,13 @@ var getPhotoDataArray = function (numberOfElements) {
 };
 
 var renderPicture = function (photoObject) {
-  var randomPicture = randomPictureTemplate.cloneNode(true);
+  var picture = pictureTemplate.cloneNode(true);
 
-  randomPicture.querySelector('.picture__img').src = photoObject.url;
-  randomPicture.querySelector('.picture__comments').textContent = photoObject.comment;
-  randomPicture.querySelector('.picture__likes').textContent = photoObject.likes;
+  picture.querySelector('.picture__img').src = photoObject.url;
+  picture.querySelector('.picture__comments').textContent = photoObject.comment;
+  picture.querySelector('.picture__likes').textContent = photoObject.likes;
 
-  return randomPicture;
+  return picture;
 };
 
 var addPicture = function (photoArray) {
@@ -73,4 +73,4 @@ var addPicture = function (photoArray) {
   return fragment;
 };
 
-pictures.appendChild(addPicture(getPhotoDataArray(NUMBER_OF_PHOTOS)));
+picturesSection.appendChild(addPicture(getPhotoDataArray(NUMBER_OF_PHOTOS)));
