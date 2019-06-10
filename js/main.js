@@ -1,10 +1,20 @@
 'use strict';
 
 var NUMBER_OF_PHOTOS = 25;
+var NUMBER_OF_USERS = 6;
 var MIN_NUMBER_OF_LIKES = 15;
 var MAX_NUMBER_OF_LIKES = 200;
 
-var COMMENTS = [
+var NAMES = [
+  'Андрей',
+  'Борис',
+  'Виктор',
+  'Гена',
+  'Дима',
+  'Евгений'
+];
+
+var MESSAGES = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
   'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
@@ -28,17 +38,44 @@ var makePhotoUrl = function (index) {
   return 'photos/' + index + '.jpg';
 };
 
+var makeUserAvatar = function (index) {
+
+  return 'img/avatar-' + index + '.svg';
+};
+
 var getRandomNumber = function (minNumber, maxNumber) {
 
   return Math.floor(Math.random() * (maxNumber - minNumber)) + minNumber;
 };
+
+var getCommentObject = function (index) {
+  var commentData = {};
+
+  commentData.avatar = makeUserAvatar(index);
+  commentData.message = getRandomArrayElement(MESSAGES);
+  commentData.name = getRandomArrayElement(NAMES);
+
+  return commentData;
+};
+
+var getCommentsArray = function (numberOfUsers) {
+  comments = [];
+
+  for (var i = 1; i <= numberOfUsers; i++) {
+    comments.push(getCommentObject(i));
+  }
+
+  return comments;
+};
+
+var comments = getCommentsArray(NUMBER_OF_USERS);
 
 var getPhotoObject = function (index) {
   var photoData = {};
 
   photoData.url = makePhotoUrl(index);
   photoData.likes = getRandomNumber(MIN_NUMBER_OF_LIKES, MAX_NUMBER_OF_LIKES);
-  photoData.comment = getRandomArrayElement(COMMENTS);
+  photoData.comment = getRandomArrayElement(comments).message;
 
   return photoData;
 };
