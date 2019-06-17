@@ -39,6 +39,11 @@ var scaleControl = uploadWindow.querySelector('.scale__control--value');
 var scaleControlBigger = uploadWindow.querySelector('.scale__control--bigger');
 var scaleControlSmaller = uploadWindow.querySelector('.scale__control--smaller');
 var previewImage = uploadWindow.querySelector('.img-upload__preview').firstElementChild;
+var effects = uploadWindow.querySelector('.effects__list');
+var chosenEffect = effects.querySelectorAll('.effects__preview');
+var effectLevel = uploadWindow.querySelector('.effect-level');
+
+console.log(effectLevel);
 
 var getRandomArrayElement = function (array) {
   var random = Math.floor(Math.random() * array.length);
@@ -175,6 +180,10 @@ var onScaleSmallerClick = function () {
   changeScale();
 };
 
+var setChosenEffect = function () {
+
+};
+
 uploadInput.addEventListener('change', function () {
   onUploadInputChange();
 });
@@ -190,5 +199,26 @@ scaleControlBigger.addEventListener('click', function () {
 scaleControlSmaller.addEventListener('click', function () {
   onScaleSmallerClick();
 });
+
+chosenEffect[0].addEventListener('click', function () {
+  effectLevel.classList.add('hidden');
+});
+
+for (var i = 0; i < chosenEffect.length; i++) {
+  chosenEffect[i].addEventListener('click', function () {
+    var effect = this.classList[1];
+
+    if (effect !== 'effects__preview--none') {
+      effectLevel.classList.remove('hidden');
+    };
+
+    if (previewImage.classList.value !== null) {
+      previewImage.classList.value = '';
+    };
+
+    previewImage.classList.add(effect);
+    console.log(previewImage.classList.value);
+  });
+};
 
 picturesSection.appendChild(addPicture(getPhotoDataArray(NUMBER_OF_PHOTOS)));
