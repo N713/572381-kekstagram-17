@@ -6,6 +6,9 @@ var MIN_NUMBER_OF_LIKES = 15;
 var MAX_NUMBER_OF_LIKES = 200;
 var SHIFT = 1;
 var ESC_KEYCODE = 27;
+var MAX_SCALE_VALUE = '100%';
+var MIN_SCALE_VALUE = '25%';
+var SCALE_STEP = 25;
 
 var NAMES = [
   'Андрей',
@@ -32,6 +35,10 @@ var uploadWindow = document.querySelector('.img-upload');
 var uploadPreview = uploadWindow.querySelector('.img-upload__overlay');
 var uploadInput = uploadWindow.querySelector('#upload-file');
 var uploadCancelButton = uploadWindow.querySelector('#upload-cancel');
+var scaleControl = uploadWindow.querySelector('.scale__control--value');
+var scaleControlBigger = uploadWindow.querySelector('.scale__control--bigger');
+var scaleControlSmaller = uploadWindow.querySelector('.scale__control--smaller');
+var previewImage = uploadWindow.querySelector('.img-upload__preview').firstElementChild;
 
 var getRandomArrayElement = function (array) {
   var random = Math.floor(Math.random() * array.length);
@@ -116,10 +123,6 @@ var addPicture = function (photoArray) {
   return fragment;
 };
 
-var openUploadPreview = function () {
-  uploadPreview.classList.remove('hidden');
-};
-
 var onUploadInputChange = function () {
   openUploadPreview();
 };
@@ -130,9 +133,46 @@ var onUploadPreviewEscPress = function (evt) {
   }
 };
 
+var openUploadPreview = function () {
+  uploadPreview.classList.remove('hidden');
+  document.addEventListener('keydown', onUploadPreviewEscPress);
+};
+
 var closeUploadPreview = function () {
   uploadPreview.classList.add('hidden');
-  document.addEventListener('keydown', onUploadPreviewEscPress);
+  document.removeEventListener('keydown', onUploadPreviewEscPress);
+  uploadInput.value = '';
+};
+
+var increaseScaleValue = function () {
+  var scaleStep = (scaleControl.value === MAX_SCALE_VALUE) ? 0 : SCALE_STEP;
+  scaleControl.value = (parseInt(scaleControl.value, 10) + scaleStep) + '%';
+
+  return scaleControl.value;
+};
+
+var decreaseScaleValue = function () {
+  var scaleStep = (scaleControl.value === MIN_SCALE_VALUE) ? 0 : SCALE_STEP;
+  scaleControl.value = (parseInt(scaleControl.value, 10) - scaleStep) + '%';
+
+  return scaleControl.value;
+};
+
+var changeScale = function () {
+  var currentScale = parseInt(scaleControl.value, 10);
+  previewImage.style.transform = 'scale( ' + (currentScale / 100) + ')';
+
+  return previewImage.style.transform;
+};
+
+var onScaleBiggerClick = function () {
+  increaseScaleValue();
+  changeScale();
+};
+
+var onScaleSmallerClick = function () {
+  decreaseScaleValue();
+  changeScale();
 };
 
 uploadInput.addEventListener('change', function () {
@@ -141,6 +181,14 @@ uploadInput.addEventListener('change', function () {
 
 uploadCancelButton.addEventListener('click', function () {
   closeUploadPreview();
+});
+
+scaleControlBigger.addEventListener('click', function () {
+  onScaleBiggerClick();
+});
+
+scaleControlSmaller.addEventListener('click', function () {
+  onScaleSmallerClick();
 });
 
 picturesSection.appendChild(addPicture(getPhotoDataArray(NUMBER_OF_PHOTOS)));
