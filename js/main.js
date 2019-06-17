@@ -5,6 +5,7 @@ var NUMBER_OF_USERS = 6;
 var MIN_NUMBER_OF_LIKES = 15;
 var MAX_NUMBER_OF_LIKES = 200;
 var SHIFT = 1;
+var ESC_KEYCODE = 27;
 
 var NAMES = [
   'Андрей',
@@ -27,6 +28,10 @@ var MESSAGES = [
 var picturesSection = document.querySelector('.pictures');
 var pictureTemplate = document.querySelector('#picture').
   content.querySelector('.picture');
+var uploadWindow = document.querySelector('.img-upload');
+var uploadPreview = uploadWindow.querySelector('.img-upload__overlay');
+var uploadInput = uploadWindow.querySelector('#upload-file');
+var uploadCancelButton = uploadWindow.querySelector('#upload-cancel');
 
 var getRandomArrayElement = function (array) {
   var random = Math.floor(Math.random() * array.length);
@@ -110,5 +115,32 @@ var addPicture = function (photoArray) {
 
   return fragment;
 };
+
+var openUploadPreview = function () {
+  uploadPreview.classList.remove('hidden');
+};
+
+var onUploadInputChange = function () {
+  openUploadPreview();
+};
+
+var onUploadPreviewEscPress = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    closeUploadPreview();
+  }
+};
+
+var closeUploadPreview = function () {
+  uploadPreview.classList.add('hidden');
+  document.addEventListener('keydown', onUploadPreviewEscPress);
+};
+
+uploadInput.addEventListener('change', function () {
+  onUploadInputChange();
+});
+
+uploadCancelButton.addEventListener('click', function () {
+  closeUploadPreview();
+});
 
 picturesSection.appendChild(addPicture(getPhotoDataArray(NUMBER_OF_PHOTOS)));
