@@ -40,7 +40,7 @@ var scaleControlBigger = uploadWindow.querySelector('.scale__control--bigger');
 var scaleControlSmaller = uploadWindow.querySelector('.scale__control--smaller');
 var previewImage = uploadWindow.querySelector('.img-upload__preview').firstElementChild;
 var effects = uploadWindow.querySelector('.effects__list');
-var effectsPreviews = effects.querySelectorAll('.effects__preview');
+var effectsPreviews = effects.querySelectorAll('.effects__radio');
 var effectLevel = uploadWindow.querySelector('.effect-level');
 
 var getRandomArrayElement = function (array) {
@@ -181,14 +181,15 @@ var onScaleSmallerClick = function () {
 var onEffectPreviewClick = function (element) {
   element.addEventListener('click', function () {
     var currentEffect = previewImage.classList;
-    var effect = element.classList[1];
+    var effect = element.value;
+    var effectName = 'effects__preview--' + effect;
 
-    if (currentEffect !== effect) {
+    if (currentEffect !== effectName) {
       currentEffect.remove(currentEffect[0]);
-      currentEffect.add(effect);
+      currentEffect.add(effectName);
     }
 
-    effectLevel.classList.toggle('hidden', currentEffect[0] === 'effects__preview--none');
+    effectLevel.classList.toggle('hidden', effect === 'none');
 
   });
 };
