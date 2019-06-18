@@ -6,8 +6,8 @@ var MIN_NUMBER_OF_LIKES = 15;
 var MAX_NUMBER_OF_LIKES = 200;
 var SHIFT = 1;
 var ESC_KEYCODE = 27;
-var MAX_SCALE_VALUE = '100%';
-var MIN_SCALE_VALUE = '25%';
+var MAX_SCALE_VALUE = 100;
+var MIN_SCALE_VALUE = 25;
 var SCALE_STEP = 25;
 
 var NAMES = [
@@ -148,14 +148,14 @@ var closeUploadPreview = function () {
 };
 
 var increaseScaleValue = function () {
-  var scaleStep = (scaleControl.value === MAX_SCALE_VALUE) ? 0 : SCALE_STEP;
+  var scaleStep = (scaleControl.value === MAX_SCALE_VALUE + '%') ? 0 : SCALE_STEP;
   scaleControl.value = (parseInt(scaleControl.value, 10) + scaleStep) + '%';
 
   return scaleControl.value;
 };
 
 var decreaseScaleValue = function () {
-  var scaleStep = (scaleControl.value === MIN_SCALE_VALUE) ? 0 : SCALE_STEP;
+  var scaleStep = (scaleControl.value === MIN_SCALE_VALUE + '%') ? 0 : SCALE_STEP;
   scaleControl.value = (parseInt(scaleControl.value, 10) - scaleStep) + '%';
 
   return scaleControl.value;
@@ -180,17 +180,17 @@ var onScaleSmallerClick = function () {
 
 var onEffectPreviewClick = function (element) {
   element.addEventListener('click', function () {
+    var currentEffect = previewImage.classList;
     var effect = element.classList[1];
 
-    if (effect !== 'effects__preview--none') {
-      effectLevel.classList.remove('hidden');
+    if (currentEffect.value !== null) {
+      currentEffect.value = null;
     }
 
-    if (previewImage.classList.value !== null) {
-      previewImage.classList.value = '';
-    }
+    currentEffect.value = effect;
 
-    previewImage.classList.add(effect);
+    (currentEffect.value !== 'effects__preview--none') ? effectLevel.classList.remove('hidden') :
+      effectLevel.classList.add('hidden');
   });
 };
 
@@ -214,10 +214,6 @@ scaleControlBigger.addEventListener('click', function () {
 
 scaleControlSmaller.addEventListener('click', function () {
   onScaleSmallerClick();
-});
-
-effectsPreviews[0].addEventListener('click', function () {
-  effectLevel.classList.add('hidden');
 });
 
 addPreviewEffectListener(effectsPreviews);
