@@ -42,6 +42,7 @@ var previewImage = uploadWindow.querySelector('.img-upload__preview').firstEleme
 var effects = uploadWindow.querySelector('.effects__list');
 var effectsPreviews = effects.querySelectorAll('.effects__radio');
 var effectLevel = uploadWindow.querySelector('.effect-level');
+var currentEffectClass = previewImage.classList[0];
 
 var getRandomArrayElement = function (array) {
   var random = Math.floor(Math.random() * array.length);
@@ -184,8 +185,8 @@ var onEffectPreviewClick = function (element) {
     var effect = element.value;
     var effectName = 'effects__preview--' + effect;
 
-    if (currentEffect !== effectName) {
-      currentEffect.remove(currentEffect[0]);
+    if (currentEffectClass !== effectName) {
+      currentEffect.remove(currentEffectClass);
       currentEffect.add(effectName);
     }
 
