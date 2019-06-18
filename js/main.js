@@ -188,11 +188,7 @@ var onEffectPreviewClick = function (element) {
       currentEffect.add(effect);
     }
 
-    if (currentEffect[0] !== 'effects__preview--none') {
-      effectLevel.classList.toggle('hidden', false);
-    } else {
-      effectLevel.classList.toggle('hidden', true);
-    }
+    effectLevel.classList.toggle('hidden', currentEffect[0] === 'effects__preview--none');
 
   });
 };
