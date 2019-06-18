@@ -178,7 +178,7 @@ var onScaleSmallerClick = function () {
   changeScale();
 };
 
-var addPreviewEffectListener = function (element) {
+var onEffectPreviewClick = function (element) {
   element.addEventListener('click', function () {
     var effect = element.classList[1];
 
@@ -194,9 +194,9 @@ var addPreviewEffectListener = function (element) {
   });
 };
 
-var onEffectPreviewClick = function (elements) {
+var addPreviewEffectListener = function (elements) {
   for (var i = 0; i < elements.length; i++) {
-    addPreviewEffectListener(elements[i]);
+    onEffectPreviewClick(elements[i]);
   }
 };
 
@@ -220,5 +220,5 @@ effectsPreviews[0].addEventListener('click', function () {
   effectLevel.classList.add('hidden');
 });
 
-onEffectPreviewClick(effectsPreviews);
+addPreviewEffectListener(effectsPreviews);
 picturesSection.appendChild(addPicture(getPhotoDataArray(NUMBER_OF_PHOTOS)));
