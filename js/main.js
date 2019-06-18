@@ -183,14 +183,17 @@ var onEffectPreviewClick = function (element) {
     var currentEffect = previewImage.classList;
     var effect = element.classList[1];
 
-    if (currentEffect.value !== null) {
-      currentEffect.value = null;
+    if (currentEffect !== effect) {
+      currentEffect.remove(currentEffect[0]);
+      currentEffect.add(effect);
     }
 
-    currentEffect.value = effect;
+    if (currentEffect[0] !== 'effects__preview--none') {
+      effectLevel.classList.toggle('hidden', false);
+    } else {
+      effectLevel.classList.toggle('hidden', true);
+    }
 
-    (currentEffect.value !== 'effects__preview--none') ? effectLevel.classList.remove('hidden') :
-      effectLevel.classList.add('hidden');
   });
 };
 
