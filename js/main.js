@@ -5,6 +5,10 @@ var NUMBER_OF_USERS = 6;
 var MIN_NUMBER_OF_LIKES = 15;
 var MAX_NUMBER_OF_LIKES = 200;
 var SHIFT = 1;
+var ESC_KEYCODE = 27;
+var MAX_SCALE_VALUE = 100;
+var MIN_SCALE_VALUE = 25;
+var SCALE_STEP = 25;
 
 var NAMES = [
   'Андрей',
@@ -27,6 +31,18 @@ var MESSAGES = [
 var picturesSection = document.querySelector('.pictures');
 var pictureTemplate = document.querySelector('#picture').
   content.querySelector('.picture');
+var uploadWindow = document.querySelector('.img-upload');
+var uploadPreview = uploadWindow.querySelector('.img-upload__overlay');
+var uploadInput = uploadWindow.querySelector('#upload-file');
+var uploadCancelButton = uploadWindow.querySelector('#upload-cancel');
+var scaleControl = uploadWindow.querySelector('.scale__control--value');
+var scaleControlBigger = uploadWindow.querySelector('.scale__control--bigger');
+var scaleControlSmaller = uploadWindow.querySelector('.scale__control--smaller');
+var previewImage = uploadWindow.querySelector('.img-upload__preview').firstElementChild;
+var effects = uploadWindow.querySelector('.effects__list');
+var previewEffectsControls = effects.querySelectorAll('.effects__radio');
+var effectLevel = uploadWindow.querySelector('.effect-level');
+var currentPreviewInputValue = null;
 
 var getRandomArrayElement = function (array) {
   var random = Math.floor(Math.random() * array.length);
@@ -111,4 +127,96 @@ var addPicture = function (photoArray) {
   return fragment;
 };
 
+var onUploadInputChange = function () {
+  openUploadPreview();
+};
+
+var onUploadPreviewEscPress = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    closeUploadPreview();
+  }
+};
+
+var openUploadPreview = function () {
+  uploadPreview.classList.remove('hidden');
+  document.addEventListener('keydown', onUploadPreviewEscPress);
+};
+
+var closeUploadPreview = function () {
+  uploadPreview.classList.add('hidden');
+  document.removeEventListener('keydown', onUploadPreviewEscPress);
+  uploadInput.value = '';
+};
+
+var increaseScaleValue = function () {
+  var scaleStep = (scaleControl.value === MAX_SCALE_VALUE + '%') ? 0 : SCALE_STEP;
+  scaleControl.value = (parseInt(scaleControl.value, 10) + scaleStep) + '%';
+
+  return scaleControl.value;
+};
+
+var decreaseScaleValue = function () {
+  var scaleStep = (scaleControl.value === MIN_SCALE_VALUE + '%') ? 0 : SCALE_STEP;
+  scaleControl.value = (parseInt(scaleControl.value, 10) - scaleStep) + '%';
+
+  return scaleControl.value;
+};
+
+var changeScale = function () {
+  var currentScale = parseInt(scaleControl.value, 10);
+  previewImage.style.transform = 'scale( ' + (currentScale / 100) + ')';
+
+  return previewImage.style.transform;
+};
+
+var onScaleBiggerClick = function () {
+  increaseScaleValue();
+  changeScale();
+};
+
+var onScaleSmallerClick = function () {
+  decreaseScaleValue();
+  changeScale();
+};
+
+var addPreviewListener = function (effectControl) {
+  effectControl.addEventListener('click', function () {
+
+    if (currentPreviewInputValue !== effectControl.value) {
+
+      if (currentPreviewInputValue) {
+        previewImage.classList.remove('effects__preview--' + currentPreviewInputValue);
+      }
+
+      currentPreviewInputValue = effectControl.value;
+      previewImage.classList.add('effects__preview--' + currentPreviewInputValue);
+      effectLevel.classList.toggle('hidden', currentPreviewInputValue === 'none');
+    }
+
+  });
+};
+
+var addPreviewEffectListeners = function (effectsControls) {
+  for (var i = 0; i < effectsControls.length; i++) {
+    addPreviewListener(effectsControls[i]);
+  }
+};
+
+uploadInput.addEventListener('change', function () {
+  onUploadInputChange();
+});
+
+uploadCancelButton.addEventListener('click', function () {
+  closeUploadPreview();
+});
+
+scaleControlBigger.addEventListener('click', function () {
+  onScaleBiggerClick();
+});
+
+scaleControlSmaller.addEventListener('click', function () {
+  onScaleSmallerClick();
+});
+
+addPreviewEffectListeners(previewEffectsControls);
 picturesSection.appendChild(addPicture(getPhotoDataArray(NUMBER_OF_PHOTOS)));
