@@ -181,19 +181,15 @@ var onScaleSmallerClick = function () {
 
 var onEffectPreviewClick = function (element) {
   element.addEventListener('click', function () {
-    var currentEffect = previewImage.classList;
-    var currentEffectClass = currentEffect[0];
 
-    if (currentPreviewInputValue !== null) {
-      currentEffect.remove(currentEffectClass);
+    if (currentPreviewInputValue) {
+      previewImage.classList.remove('effects__preview--' + currentPreviewInputValue);
     }
 
     currentPreviewInputValue = element.value;
-    var effectName = 'effects__preview--' + currentPreviewInputValue;
 
-    if (currentEffect !== effectName) {
-      currentEffect.remove(currentEffectClass);
-      currentEffect.add(effectName);
+    if (previewImage.classList !== ('effects__preview--' + currentPreviewInputValue)) {
+      previewImage.classList.add('effects__preview--' + currentPreviewInputValue);
     }
 
     effectLevel.classList.toggle('hidden', currentPreviewInputValue === 'none');
