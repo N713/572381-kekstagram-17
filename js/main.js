@@ -42,7 +42,6 @@ var previewImage = uploadWindow.querySelector('.img-upload__preview').firstEleme
 var effects = uploadWindow.querySelector('.effects__list');
 var effectsPreviews = effects.querySelectorAll('.effects__radio');
 var effectLevel = uploadWindow.querySelector('.effect-level');
-var currentEffectClass = previewImage.classList[0];
 
 var getRandomArrayElement = function (array) {
   var random = Math.floor(Math.random() * array.length);
@@ -182,10 +181,11 @@ var onScaleSmallerClick = function () {
 var onEffectPreviewClick = function (element) {
   element.addEventListener('click', function () {
     var currentEffect = previewImage.classList;
+    var currentEffectClass = currentEffect[0];
     var effect = element.value;
     var effectName = 'effects__preview--' + effect;
 
-    if (currentEffectClass !== effectName) {
+    if (currentEffect !== effectName) {
       currentEffect.remove(currentEffectClass);
       currentEffect.add(effectName);
     }
