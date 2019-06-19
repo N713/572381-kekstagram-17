@@ -40,7 +40,7 @@ var scaleControlBigger = uploadWindow.querySelector('.scale__control--bigger');
 var scaleControlSmaller = uploadWindow.querySelector('.scale__control--smaller');
 var previewImage = uploadWindow.querySelector('.img-upload__preview').firstElementChild;
 var effects = uploadWindow.querySelector('.effects__list');
-var effectsPreviews = effects.querySelectorAll('.effects__radio');
+var previewEffectsControls = effects.querySelectorAll('.effects__radio');
 var effectLevel = uploadWindow.querySelector('.effect-level');
 var currentPreviewInputValue = null;
 
@@ -179,27 +179,26 @@ var onScaleSmallerClick = function () {
   changeScale();
 };
 
-var onEffectPreviewClick = function (element) {
-  element.addEventListener('click', function () {
+var addPreviewListener = function (effectControl) {
+  effectControl.addEventListener('click', function () {
 
-    if (currentPreviewInputValue) {
-      previewImage.classList.remove('effects__preview--' + currentPreviewInputValue);
-    }
+    if (currentPreviewInputValue !== effectControl.value) {
 
-    currentPreviewInputValue = element.value;
+      if (currentPreviewInputValue) {
+        previewImage.classList.remove('effects__preview--' + currentPreviewInputValue);
+      }
 
-    if (previewImage.classList !== ('effects__preview--' + currentPreviewInputValue)) {
+      currentPreviewInputValue = effectControl.value;
       previewImage.classList.add('effects__preview--' + currentPreviewInputValue);
+      effectLevel.classList.toggle('hidden', currentPreviewInputValue === 'none');
     }
-
-    effectLevel.classList.toggle('hidden', currentPreviewInputValue === 'none');
 
   });
 };
 
-var addPreviewEffectListener = function (elements) {
-  for (var i = 0; i < elements.length; i++) {
-    onEffectPreviewClick(elements[i]);
+var addPreviewEffectListeners = function (effectsControls) {
+  for (var i = 0; i < effectsControls.length; i++) {
+    addPreviewListener(effectsControls[i]);
   }
 };
 
@@ -219,5 +218,5 @@ scaleControlSmaller.addEventListener('click', function () {
   onScaleSmallerClick();
 });
 
-addPreviewEffectListener(effectsPreviews);
+addPreviewEffectListeners(previewEffectsControls);
 picturesSection.appendChild(addPicture(getPhotoDataArray(NUMBER_OF_PHOTOS)));
