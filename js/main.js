@@ -134,10 +134,8 @@ var onUploadInputChange = function () {
 };
 
 var onUploadPreviewEscPress = function (evt) {
-  if (!isCommentFocused) {
-    if (evt.keyCode === ESC_KEYCODE) {
+  if (evt.keyCode === ESC_KEYCODE && !isCommentFocused) {
       closeUploadPreview();
-    }
   }
 };
 
@@ -224,12 +222,10 @@ scaleControlSmaller.addEventListener('click', function () {
 
 commentArea.addEventListener('focus', function () {
   isCommentFocused = true;
-  return isCommentFocused;
 });
 
 commentArea.addEventListener('focusout', function () {
   isCommentFocused = false;
-  return isCommentFocused;
 });
 
 addPreviewEffectListeners(previewEffectsControls);
