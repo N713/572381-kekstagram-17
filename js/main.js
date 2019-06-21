@@ -135,7 +135,7 @@ var onUploadInputChange = function () {
 
 var onUploadPreviewEscPress = function (evt) {
   if (evt.keyCode === ESC_KEYCODE && !isCommentFocused) {
-      closeUploadPreview();
+    closeUploadPreview();
   }
 };
 
