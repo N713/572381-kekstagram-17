@@ -44,7 +44,7 @@ var previewEffectsControls = effects.querySelectorAll('.effects__radio');
 var effectLevel = uploadWindow.querySelector('.effect-level');
 var currentPreviewInputValue = null;
 var commentArea = uploadWindow.querySelector('.text__description');
-var isCommentFocused = null;
+var isCommentFocused = false;
 
 var getRandomArrayElement = function (array) {
   var random = Math.floor(Math.random() * array.length);
@@ -223,11 +223,11 @@ scaleControlSmaller.addEventListener('click', function () {
 });
 
 commentArea.addEventListener('focus', function () {
-  isCommentFocused = true;
+  return isCommentFocused = true;
 });
 
 commentArea.addEventListener('focusout', function () {
-  isCommentFocused = false;
+  return isCommentFocused = false;
 });
 
 addPreviewEffectListeners(previewEffectsControls);
