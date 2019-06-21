@@ -9,6 +9,7 @@ var ESC_KEYCODE = 27;
 var MAX_SCALE_VALUE = 100;
 var MIN_SCALE_VALUE = 25;
 var SCALE_STEP = 25;
+var WIDTH_OF_LEVEL_LINE = 450;
 
 var NAMES = [
   'Андрей',
@@ -45,6 +46,13 @@ var effectLevel = uploadWindow.querySelector('.effect-level');
 var currentPreviewInputValue = null;
 var commentArea = uploadWindow.querySelector('.text__description');
 var isCommentFocused = false;
+var effectLevelPin = uploadWindow.querySelector('.effect-level__pin');
+var effectLevelDepth = uploadWindow.querySelector('.effect-level__depth');
+var effectLevelInput = uploadWindow.querySelector('.effect-level__value');
+var valueMax = effectLevelInput.max;
+var percentFromLevelLineWidth = WIDTH_OF_LEVEL_LINE / valueMax;
+
+console.log(previewImage);
 
 var getRandomArrayElement = function (array) {
   var random = Math.floor(Math.random() * array.length);
@@ -226,6 +234,61 @@ commentArea.addEventListener('focus', function () {
 
 commentArea.addEventListener('focusout', function () {
   isCommentFocused = false;
+});
+
+effectLevelPin.addEventListener('mousedown', function (evt) {
+  var startCoord = {
+    x: evt.clientX,
+  };
+
+  var onEffectLevelPinMouseMove = function (moveEvt) {
+    var shift = {
+      x: startCoord.x - moveEvt.clientX
+    };
+
+    startCoord = {
+      x: moveEvt.clientX
+    };
+
+    var halfOfPin = effectLevelPin.style.width / 2;
+
+    effectLevelPin.style.left = (effectLevelPin.offsetLeft - shift.x) + 'px';
+    effectLevelDepth.style.width = effectLevelPin.style.left;
+    effectLevelInput.value = parseInt(effectLevelDepth.style.width, 10) / percentFromLevelLineWidth;
+
+    var levelDepthWidth = parseInt(effectLevelDepth.style.width);
+
+    if (levelDepthWidth === WIDTH_OF_LEVEL_LINE - halfOfPin || levelDepthWidth === 0 + halfOfPin) {
+      document.removeEventListener('mousemove', onEffectLevelPinMouseMove);
+    }
+
+    switch (currentPreviewInputValue) {
+      case 'chrome':
+        previewImage.style.filter = 'grayscale(' + effectLevelInput.value/100 + ')';
+        break;
+      case 'sepia':
+        previewImage.style.filter = 'sepia(' + effectLevelInput.value/100 + ')';
+        break;
+      case 'marvin':
+        previewImage.style.filter = 'invert(' + effectLevelInput.value + '%)';
+        break;
+      case 'phobos':
+        previewImage.style.filter = 'blur(' + ((effectLevelInput.value/100) * 3) + 'px)';
+        break;
+      case 'heat':
+        previewImage.style.filter = 'brightness(' + ((effectLevelInput.value/100) * 3) + ')';
+        break;
+    }
+
+  };
+
+  var onEffectLevelPinMouseUp = function () {
+    document.removeEventListener('mousemove', onEffectLevelPinMouseMove);
+    document.removeEventListener('mouseup', onEffectLevelPinMouseUp);
+  };
+
+  document.addEventListener('mousemove', onEffectLevelPinMouseMove);
+  document.addEventListener('mouseup', onEffectLevelPinMouseUp);
 });
 
 addPreviewEffectListeners(previewEffectsControls);
