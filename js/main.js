@@ -43,6 +43,8 @@ var effects = uploadWindow.querySelector('.effects__list');
 var previewEffectsControls = effects.querySelectorAll('.effects__radio');
 var effectLevel = uploadWindow.querySelector('.effect-level');
 var currentPreviewInputValue = null;
+var commentArea = uploadWindow.querySelector('.text__description');
+var isCommentFocused = false;
 
 var getRandomArrayElement = function (array) {
   var random = Math.floor(Math.random() * array.length);
@@ -132,7 +134,7 @@ var onUploadInputChange = function () {
 };
 
 var onUploadPreviewEscPress = function (evt) {
-  if (evt.keyCode === ESC_KEYCODE) {
+  if (evt.keyCode === ESC_KEYCODE && !isCommentFocused) {
     closeUploadPreview();
   }
 };
@@ -216,6 +218,14 @@ scaleControlBigger.addEventListener('click', function () {
 
 scaleControlSmaller.addEventListener('click', function () {
   onScaleSmallerClick();
+});
+
+commentArea.addEventListener('focus', function () {
+  isCommentFocused = true;
+});
+
+commentArea.addEventListener('focusout', function () {
+  isCommentFocused = false;
 });
 
 addPreviewEffectListeners(previewEffectsControls);
