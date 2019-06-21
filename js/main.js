@@ -223,11 +223,13 @@ scaleControlSmaller.addEventListener('click', function () {
 });
 
 commentArea.addEventListener('focus', function () {
-  return isCommentFocused = true;
+  isCommentFocused = true;
+  return isCommentFocused;
 });
 
 commentArea.addEventListener('focusout', function () {
-  return isCommentFocused = false;
+  isCommentFocused = false;
+  return isCommentFocused;
 });
 
 addPreviewEffectListeners(previewEffectsControls);
