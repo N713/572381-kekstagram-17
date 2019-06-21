@@ -52,8 +52,6 @@ var effectLevelInput = uploadWindow.querySelector('.effect-level__value');
 var valueMax = effectLevelInput.max;
 var percentFromLevelLineWidth = WIDTH_OF_LEVEL_LINE / valueMax;
 
-console.log(previewImage);
-
 var getRandomArrayElement = function (array) {
   var random = Math.floor(Math.random() * array.length);
 
@@ -150,6 +148,7 @@ var onUploadPreviewEscPress = function (evt) {
 var openUploadPreview = function () {
   uploadPreview.classList.remove('hidden');
   document.addEventListener('keydown', onUploadPreviewEscPress);
+  effectLevel.classList.add('hidden');
 };
 
 var closeUploadPreview = function () {
@@ -201,6 +200,10 @@ var addPreviewListener = function (effectControl) {
       currentPreviewInputValue = effectControl.value;
       previewImage.classList.add('effects__preview--' + currentPreviewInputValue);
       effectLevel.classList.toggle('hidden', currentPreviewInputValue === 'none');
+      effectLevelPin.style.left = 100 + '%';
+      effectLevelDepth.style.width = WIDTH_OF_LEVEL_LINE + 'px';
+      effectLevelInput.value = valueMax;
+      previewImage.style.filter = '';
     }
 
   });
@@ -256,7 +259,7 @@ effectLevelPin.addEventListener('mousedown', function (evt) {
     effectLevelDepth.style.width = effectLevelPin.style.left;
     effectLevelInput.value = parseInt(effectLevelDepth.style.width, 10) / percentFromLevelLineWidth;
 
-    var levelDepthWidth = parseInt(effectLevelDepth.style.width);
+    var levelDepthWidth = parseInt(effectLevelDepth.style.width, 10);
 
     if (levelDepthWidth === WIDTH_OF_LEVEL_LINE - halfOfPin || levelDepthWidth === 0 + halfOfPin) {
       document.removeEventListener('mousemove', onEffectLevelPinMouseMove);
@@ -264,19 +267,19 @@ effectLevelPin.addEventListener('mousedown', function (evt) {
 
     switch (currentPreviewInputValue) {
       case 'chrome':
-        previewImage.style.filter = 'grayscale(' + effectLevelInput.value/100 + ')';
+        previewImage.style.filter = 'grayscale(' + effectLevelInput.value / 100 + ')';
         break;
       case 'sepia':
-        previewImage.style.filter = 'sepia(' + effectLevelInput.value/100 + ')';
+        previewImage.style.filter = 'sepia(' + effectLevelInput.value / 100 + ')';
         break;
       case 'marvin':
         previewImage.style.filter = 'invert(' + effectLevelInput.value + '%)';
         break;
       case 'phobos':
-        previewImage.style.filter = 'blur(' + ((effectLevelInput.value/100) * 3) + 'px)';
+        previewImage.style.filter = 'blur(' + (effectLevelInput.value / 100) * 3 + 'px)';
         break;
       case 'heat':
-        previewImage.style.filter = 'brightness(' + ((effectLevelInput.value/100) * 3) + ')';
+        previewImage.style.filter = 'brightness(' + (effectLevelInput.value / 100) * 3 + ')';
         break;
     }
 
