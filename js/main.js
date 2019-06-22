@@ -151,6 +151,7 @@ var openUploadPreview = function () {
   document.addEventListener('keydown', onUploadPreviewEscPress);
   effectLevel.classList.add('hidden');
   previewImage.classList.add('effects__preview--none');
+  previewImage.style.filter = 'none';
 };
 
 var closeUploadPreview = function () {
@@ -189,6 +190,16 @@ var onScaleSmallerClick = function () {
   changeScale();
 };
 
+var setControls = function (currentControl) {
+  previewImage.classList.add('effects__preview--' + currentControl);
+  currentClass = 'effects__preview--' + currentControl;
+  effectLevel.classList.toggle('hidden', currentControl === 'none');
+  effectLevelPin.style.left = 100 + '%';
+  effectLevelDepth.style.width = WIDTH_OF_LEVEL_LINE + 'px';
+  effectLevelInput.value = valueMax;
+  previewImage.style.filter = '';
+};
+
 var onPreviewControlClick = function (control) {
 
   if (currentPreviewInputValue !== control.value) {
@@ -198,15 +209,9 @@ var onPreviewControlClick = function (control) {
     }
 
     currentPreviewInputValue = control.value;
-    previewImage.classList.add('effects__preview--' + currentPreviewInputValue);
-    currentClass = 'effects__preview--' + currentPreviewInputValue;
-    effectLevel.classList.toggle('hidden', currentPreviewInputValue === 'none');
-    effectLevelPin.style.left = 100 + '%';
-    effectLevelDepth.style.width = WIDTH_OF_LEVEL_LINE + 'px';
-    effectLevelInput.value = valueMax;
-    previewImage.style.filter = '';
+    setControls(currentPreviewInputValue);
   } else {
-    previewImage.classList.add('effects__preview--' + control.value);
+    setControls(control.value);
   }
 };
 
