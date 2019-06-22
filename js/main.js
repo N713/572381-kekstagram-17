@@ -205,6 +205,8 @@ var onPreviewControlClick = function (control) {
     effectLevelDepth.style.width = WIDTH_OF_LEVEL_LINE + 'px';
     effectLevelInput.value = valueMax;
     previewImage.style.filter = '';
+  } else {
+    previewImage.classList.add('effects__preview--' + control.value);
   }
 };
 
