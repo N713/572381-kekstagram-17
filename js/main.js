@@ -49,9 +49,9 @@ var isCommentFocused = false;
 var effectLevelPin = uploadWindow.querySelector('.effect-level__pin');
 var effectLevelDepth = uploadWindow.querySelector('.effect-level__depth');
 var effectLevelInput = uploadWindow.querySelector('.effect-level__value');
+var uploadForm = uploadWindow.querySelector('.img-upload__form');
 var valueMax = effectLevelInput.max;
 var percentFromLevelLineWidth = WIDTH_OF_LEVEL_LINE / valueMax;
-var currentClass = '';
 
 var getRandomArrayElement = function (array) {
   var random = Math.floor(Math.random() * array.length);
@@ -146,12 +146,16 @@ var onUploadPreviewEscPress = function (evt) {
   }
 };
 
-var openUploadPreview = function () {
-  uploadPreview.classList.remove('hidden');
-  document.addEventListener('keydown', onUploadPreviewEscPress);
+var setStartEffects = function () {
   effectLevel.classList.add('hidden');
   previewImage.classList.add('effects__preview--none');
   previewImage.style.filter = 'none';
+};
+
+var openUploadPreview = function () {
+  uploadPreview.classList.remove('hidden');
+  document.addEventListener('keydown', onUploadPreviewEscPress);
+  setStartEffects();
 };
 
 var closeUploadPreview = function () {
@@ -192,7 +196,6 @@ var onScaleSmallerClick = function () {
 
 var setControl = function (currentControl) {
   previewImage.classList.add('effects__preview--' + currentControl);
-  currentClass = 'effects__preview--' + currentControl;
   effectLevel.classList.toggle('hidden', currentControl === 'none');
   effectLevelPin.style.left = 100 + '%';
   effectLevelDepth.style.width = WIDTH_OF_LEVEL_LINE + 'px';
@@ -251,27 +254,13 @@ var switchFilter = function (currentFilter) {
   previewImage.style.filter = filter;
 };
 
-var uncheckControl = function (controls) {
-  for (var i = 0; i < controls.length; i++) {
-    if (controls[i].checked) {
-      controls[i].checked = false;
-    }
-  }
-};
-
 uploadInput.addEventListener('change', function () {
   onUploadInputChange();
 });
 
 uploadCancelButton.addEventListener('click', function () {
   closeUploadPreview();
-  uncheckControl(previewEffectsControls);
-
-  if (!currentClass) {
-    currentClass = 'effects__preview--none';
-  }
-
-  previewImage.classList.remove(currentClass + '');
+  uploadForm.reset();
   previewImage.style.transform = 'scale(1)';
 });
 
