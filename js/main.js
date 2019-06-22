@@ -51,6 +51,7 @@ var effectLevelDepth = uploadWindow.querySelector('.effect-level__depth');
 var effectLevelInput = uploadWindow.querySelector('.effect-level__value');
 var valueMax = effectLevelInput.max;
 var percentFromLevelLineWidth = WIDTH_OF_LEVEL_LINE / valueMax;
+var currentClass = '';
 
 var getRandomArrayElement = function (array) {
   var random = Math.floor(Math.random() * array.length);
@@ -149,12 +150,12 @@ var openUploadPreview = function () {
   uploadPreview.classList.remove('hidden');
   document.addEventListener('keydown', onUploadPreviewEscPress);
   effectLevel.classList.add('hidden');
+  previewImage.classList.add('effects__preview--none');
 };
 
 var closeUploadPreview = function () {
   uploadPreview.classList.add('hidden');
   document.removeEventListener('keydown', onUploadPreviewEscPress);
-  uploadInput.value = '';
 };
 
 var increaseScaleValue = function () {
@@ -198,12 +199,12 @@ var onPreviewControlClick = function (control) {
 
     currentPreviewInputValue = control.value;
     previewImage.classList.add('effects__preview--' + currentPreviewInputValue);
+    currentClass = 'effects__preview--' + currentPreviewInputValue;
     effectLevel.classList.toggle('hidden', currentPreviewInputValue === 'none');
     effectLevelPin.style.left = 100 + '%';
     effectLevelDepth.style.width = WIDTH_OF_LEVEL_LINE + 'px';
     effectLevelInput.value = valueMax;
     previewImage.style.filter = '';
-
   }
 };
 
@@ -243,12 +244,22 @@ var switchFilter = function (currentFilter) {
   previewImage.style.filter = filter;
 };
 
+var uncheckControl = function (controls) {
+  for (var i = 0; i < controls.length; i++) {
+    if (controls[i].checked) {
+      controls[i].checked = false;
+    }
+  }
+};
+
 uploadInput.addEventListener('change', function () {
   onUploadInputChange();
 });
 
 uploadCancelButton.addEventListener('click', function () {
   closeUploadPreview();
+  uncheckControl(previewEffectsControls);
+  previewImage.classList.remove(currentClass + '');
 });
 
 scaleControlBigger.addEventListener('click', function () {
