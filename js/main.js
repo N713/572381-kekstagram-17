@@ -259,7 +259,13 @@ uploadInput.addEventListener('change', function () {
 uploadCancelButton.addEventListener('click', function () {
   closeUploadPreview();
   uncheckControl(previewEffectsControls);
+
+  if (!currentClass) {
+    currentClass = 'effects__preview--none';
+  }
+
   previewImage.classList.remove(currentClass + '');
+  previewImage.style.transform = 'scale(1)';
 });
 
 scaleControlBigger.addEventListener('click', function () {
