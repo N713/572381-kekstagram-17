@@ -190,7 +190,7 @@ var onScaleSmallerClick = function () {
   changeScale();
 };
 
-var setControls = function (currentControl) {
+var setControl = function (currentControl) {
   previewImage.classList.add('effects__preview--' + currentControl);
   currentClass = 'effects__preview--' + currentControl;
   effectLevel.classList.toggle('hidden', currentControl === 'none');
@@ -209,9 +209,9 @@ var onPreviewControlClick = function (control) {
     }
 
     currentPreviewInputValue = control.value;
-    setControls(currentPreviewInputValue);
+    setControl(currentPreviewInputValue);
   } else {
-    setControls(control.value);
+    setControl(control.value);
   }
 };
 
