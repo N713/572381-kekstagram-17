@@ -253,17 +253,9 @@ effectLevelPin.addEventListener('mousedown', function (evt) {
       x: moveEvt.clientX
     };
 
-    var halfOfPin = effectLevelPin.style.width / 2;
-
     effectLevelPin.style.left = (effectLevelPin.offsetLeft - shift.x) + 'px';
     effectLevelDepth.style.width = effectLevelPin.style.left;
     effectLevelInput.value = parseInt(effectLevelDepth.style.width, 10) / percentFromLevelLineWidth;
-
-    var levelDepthWidth = parseInt(effectLevelDepth.style.width, 10);
-
-    if (levelDepthWidth === WIDTH_OF_LEVEL_LINE - halfOfPin || levelDepthWidth === 0 + halfOfPin) {
-      document.removeEventListener('mousemove', onEffectLevelPinMouseMove);
-    }
 
     switch (currentPreviewInputValue) {
       case 'chrome':
@@ -283,6 +275,13 @@ effectLevelPin.addEventListener('mousedown', function (evt) {
         break;
     }
 
+    if (effectLevelPin.offsetLeft > WIDTH_OF_LEVEL_LINE) {
+      effectLevelPin.style.left = WIDTH_OF_LEVEL_LINE + 'px';
+    }
+
+    if (effectLevelPin.offsetLeft < 0) {
+      effectLevelPin.style.left = 0 + 'px';
+    }
   };
 
   var onEffectLevelPinMouseUp = function () {
