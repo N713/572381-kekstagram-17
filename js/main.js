@@ -147,7 +147,6 @@ var onUploadPreviewEscPress = function (evt) {
 };
 
 var setStartEffects = function () {
-  effectLevel.classList.add('hidden');
   previewImage.classList.add('effects__preview--none');
   previewImage.style.filter = 'none';
   previewImage.style.transform = 'scale(1)';
@@ -155,6 +154,7 @@ var setStartEffects = function () {
 
 var openUploadPreview = function () {
   uploadPreview.classList.remove('hidden');
+  effectLevel.classList.add('hidden');
   document.addEventListener('keydown', onUploadPreviewEscPress);
 };
 
