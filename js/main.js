@@ -150,12 +150,12 @@ var setStartEffects = function () {
   effectLevel.classList.add('hidden');
   previewImage.classList.add('effects__preview--none');
   previewImage.style.filter = 'none';
+  previewImage.style.transform = 'scale(1)';
 };
 
 var openUploadPreview = function () {
   uploadPreview.classList.remove('hidden');
   document.addEventListener('keydown', onUploadPreviewEscPress);
-  setStartEffects();
 };
 
 var closeUploadPreview = function () {
@@ -261,7 +261,7 @@ uploadInput.addEventListener('change', function () {
 uploadCancelButton.addEventListener('click', function () {
   closeUploadPreview();
   uploadForm.reset();
-  previewImage.style.transform = 'scale(1)';
+  setStartEffects();
 });
 
 scaleControlBigger.addEventListener('click', function () {
