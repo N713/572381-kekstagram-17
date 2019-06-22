@@ -188,24 +188,28 @@ var onScaleSmallerClick = function () {
   changeScale();
 };
 
-var addPreviewListener = function (effectControl) {
-  effectControl.addEventListener('click', function () {
+var onPreviewControlClick = function (control) {
 
-    if (currentPreviewInputValue !== effectControl.value) {
+  if (currentPreviewInputValue !== control.value) {
 
-      if (currentPreviewInputValue) {
-        previewImage.classList.remove('effects__preview--' + currentPreviewInputValue);
-      }
-
-      currentPreviewInputValue = effectControl.value;
-      previewImage.classList.add('effects__preview--' + currentPreviewInputValue);
-      effectLevel.classList.toggle('hidden', currentPreviewInputValue === 'none');
-      effectLevelPin.style.left = 100 + '%';
-      effectLevelDepth.style.width = WIDTH_OF_LEVEL_LINE + 'px';
-      effectLevelInput.value = valueMax;
-      previewImage.style.filter = '';
+    if (currentPreviewInputValue) {
+      previewImage.classList.remove('effects__preview--' + currentPreviewInputValue);
     }
 
+    currentPreviewInputValue = control.value;
+    previewImage.classList.add('effects__preview--' + currentPreviewInputValue);
+    effectLevel.classList.toggle('hidden', currentPreviewInputValue === 'none');
+    effectLevelPin.style.left = 100 + '%';
+    effectLevelDepth.style.width = WIDTH_OF_LEVEL_LINE + 'px';
+    effectLevelInput.value = valueMax;
+    previewImage.style.filter = '';
+
+  }
+};
+
+var addPreviewListener = function (effectControl) {
+  effectControl.addEventListener('click', function () {
+    onPreviewControlClick(effectControl);
   });
 };
 
@@ -213,6 +217,30 @@ var addPreviewEffectListeners = function (effectsControls) {
   for (var i = 0; i < effectsControls.length; i++) {
     addPreviewListener(effectsControls[i]);
   }
+};
+
+var switchFilter = function (currentFilter) {
+  var filter = '';
+
+  switch (currentFilter) {
+    case 'chrome':
+      filter = 'grayscale(' + effectLevelInput.value / 100 + ')';
+      break;
+    case 'sepia':
+      filter = 'sepia(' + effectLevelInput.value / 100 + ')';
+      break;
+    case 'marvin':
+      filter = 'invert(' + effectLevelInput.value + '%)';
+      break;
+    case 'phobos':
+      filter = 'blur(' + (effectLevelInput.value / 100) * 3 + 'px)';
+      break;
+    case 'heat':
+      filter = 'brightness(' + (effectLevelInput.value / 100) * 3 + ')';
+      break;
+  }
+
+  previewImage.style.filter = filter;
 };
 
 uploadInput.addEventListener('change', function () {
@@ -253,35 +281,22 @@ effectLevelPin.addEventListener('mousedown', function (evt) {
       x: moveEvt.clientX
     };
 
-    effectLevelPin.style.left = (effectLevelPin.offsetLeft - shift.x) + 'px';
+    var pinCoordinate;
+
+    if (effectLevelPin.offsetLeft > WIDTH_OF_LEVEL_LINE) {
+      pinCoordinate = WIDTH_OF_LEVEL_LINE + 'px';
+    } else if (effectLevelPin.offsetLeft < 0) {
+      pinCoordinate = 0 + 'px';
+    } else {
+      pinCoordinate = (effectLevelPin.offsetLeft - shift.x) + 'px';
+    }
+
+    effectLevelPin.style.left = pinCoordinate;
     effectLevelDepth.style.width = effectLevelPin.style.left;
     effectLevelInput.value = parseInt(effectLevelDepth.style.width, 10) / percentFromLevelLineWidth;
 
-    switch (currentPreviewInputValue) {
-      case 'chrome':
-        previewImage.style.filter = 'grayscale(' + effectLevelInput.value / 100 + ')';
-        break;
-      case 'sepia':
-        previewImage.style.filter = 'sepia(' + effectLevelInput.value / 100 + ')';
-        break;
-      case 'marvin':
-        previewImage.style.filter = 'invert(' + effectLevelInput.value + '%)';
-        break;
-      case 'phobos':
-        previewImage.style.filter = 'blur(' + (effectLevelInput.value / 100) * 3 + 'px)';
-        break;
-      case 'heat':
-        previewImage.style.filter = 'brightness(' + (effectLevelInput.value / 100) * 3 + ')';
-        break;
-    }
+    switchFilter(currentPreviewInputValue);
 
-    if (effectLevelPin.offsetLeft > WIDTH_OF_LEVEL_LINE) {
-      effectLevelPin.style.left = WIDTH_OF_LEVEL_LINE + 'px';
-    }
-
-    if (effectLevelPin.offsetLeft < 0) {
-      effectLevelPin.style.left = 0 + 'px';
-    }
   };
 
   var onEffectLevelPinMouseUp = function () {
