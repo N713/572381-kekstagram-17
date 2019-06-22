@@ -296,9 +296,9 @@ effectLevelPin.addEventListener('mousedown', function (evt) {
 
     var pinCoordinate;
 
-    if (effectLevelPin.offsetLeft > WIDTH_OF_LEVEL_LINE) {
+    if ((effectLevelPin.offsetLeft - shift.x) >= WIDTH_OF_LEVEL_LINE) {
       pinCoordinate = WIDTH_OF_LEVEL_LINE + 'px';
-    } else if (effectLevelPin.offsetLeft < 0) {
+    } else if ((effectLevelPin.offsetLeft - shift.x) <= 0) {
       pinCoordinate = 0 + 'px';
     } else {
       pinCoordinate = (effectLevelPin.offsetLeft - shift.x) + 'px';
