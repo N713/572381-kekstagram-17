@@ -9,6 +9,7 @@ var ESC_KEYCODE = 27;
 var MAX_SCALE_VALUE = 100;
 var MIN_SCALE_VALUE = 25;
 var SCALE_STEP = 25;
+var WIDTH_OF_LEVEL_LINE = 450;
 
 var NAMES = [
   'Андрей',
@@ -45,6 +46,12 @@ var effectLevel = uploadWindow.querySelector('.effect-level');
 var currentPreviewInputValue = null;
 var commentArea = uploadWindow.querySelector('.text__description');
 var isCommentFocused = false;
+var effectLevelPin = uploadWindow.querySelector('.effect-level__pin');
+var effectLevelDepth = uploadWindow.querySelector('.effect-level__depth');
+var effectLevelInput = uploadWindow.querySelector('.effect-level__value');
+var uploadForm = uploadWindow.querySelector('.img-upload__form');
+var valueMax = effectLevelInput.max;
+var percentFromLevelLineWidth = WIDTH_OF_LEVEL_LINE / valueMax;
 
 var getRandomArrayElement = function (array) {
   var random = Math.floor(Math.random() * array.length);
@@ -139,15 +146,21 @@ var onUploadPreviewEscPress = function (evt) {
   }
 };
 
+var setStartEffects = function () {
+  previewImage.classList.add('effects__preview--none');
+  previewImage.style.filter = 'none';
+  previewImage.style.transform = 'scale(1)';
+};
+
 var openUploadPreview = function () {
   uploadPreview.classList.remove('hidden');
+  effectLevel.classList.add('hidden');
   document.addEventListener('keydown', onUploadPreviewEscPress);
 };
 
 var closeUploadPreview = function () {
   uploadPreview.classList.add('hidden');
   document.removeEventListener('keydown', onUploadPreviewEscPress);
-  uploadInput.value = '';
 };
 
 var increaseScaleValue = function () {
@@ -181,20 +194,33 @@ var onScaleSmallerClick = function () {
   changeScale();
 };
 
-var addPreviewListener = function (effectControl) {
-  effectControl.addEventListener('click', function () {
+var setControl = function (currentControl) {
+  previewImage.classList.add('effects__preview--' + currentControl);
+  effectLevel.classList.toggle('hidden', currentControl === 'none');
+  effectLevelPin.style.left = 100 + '%';
+  effectLevelDepth.style.width = WIDTH_OF_LEVEL_LINE + 'px';
+  effectLevelInput.value = valueMax;
+  previewImage.style.filter = '';
+};
 
-    if (currentPreviewInputValue !== effectControl.value) {
+var onPreviewControlClick = function (control) {
 
-      if (currentPreviewInputValue) {
-        previewImage.classList.remove('effects__preview--' + currentPreviewInputValue);
-      }
+  if (currentPreviewInputValue !== control.value) {
 
-      currentPreviewInputValue = effectControl.value;
-      previewImage.classList.add('effects__preview--' + currentPreviewInputValue);
-      effectLevel.classList.toggle('hidden', currentPreviewInputValue === 'none');
+    if (currentPreviewInputValue) {
+      previewImage.classList.remove('effects__preview--' + currentPreviewInputValue);
     }
 
+    currentPreviewInputValue = control.value;
+    setControl(currentPreviewInputValue);
+  } else {
+    setControl(control.value);
+  }
+};
+
+var addPreviewListener = function (effectControl) {
+  effectControl.addEventListener('click', function () {
+    onPreviewControlClick(effectControl);
   });
 };
 
@@ -204,12 +230,38 @@ var addPreviewEffectListeners = function (effectsControls) {
   }
 };
 
+var switchFilter = function (currentFilter) {
+  var filter = '';
+
+  switch (currentFilter) {
+    case 'chrome':
+      filter = 'grayscale(' + effectLevelInput.value / 100 + ')';
+      break;
+    case 'sepia':
+      filter = 'sepia(' + effectLevelInput.value / 100 + ')';
+      break;
+    case 'marvin':
+      filter = 'invert(' + effectLevelInput.value + '%)';
+      break;
+    case 'phobos':
+      filter = 'blur(' + (effectLevelInput.value / 100) * 3 + 'px)';
+      break;
+    case 'heat':
+      filter = 'brightness(' + (effectLevelInput.value / 100) * 3 + ')';
+      break;
+  }
+
+  previewImage.style.filter = filter;
+};
+
 uploadInput.addEventListener('change', function () {
   onUploadInputChange();
 });
 
 uploadCancelButton.addEventListener('click', function () {
   closeUploadPreview();
+  uploadForm.reset();
+  setStartEffects();
 });
 
 scaleControlBigger.addEventListener('click', function () {
@@ -226,6 +278,48 @@ commentArea.addEventListener('focus', function () {
 
 commentArea.addEventListener('focusout', function () {
   isCommentFocused = false;
+});
+
+effectLevelPin.addEventListener('mousedown', function (evt) {
+  var startCoord = {
+    x: evt.clientX,
+  };
+
+  var onEffectLevelPinMouseMove = function (moveEvt) {
+    var shift = {
+      x: startCoord.x - moveEvt.clientX
+    };
+
+    startCoord = {
+      x: moveEvt.clientX
+    };
+
+    var pinCoordinate;
+    var nextCoordinate = effectLevelPin.offsetLeft - shift.x;
+
+    if (nextCoordinate >= WIDTH_OF_LEVEL_LINE) {
+      pinCoordinate = WIDTH_OF_LEVEL_LINE + 'px';
+    } else if (nextCoordinate <= 0) {
+      pinCoordinate = 0 + 'px';
+    } else {
+      pinCoordinate = nextCoordinate + 'px';
+    }
+
+    effectLevelPin.style.left = pinCoordinate;
+    effectLevelDepth.style.width = effectLevelPin.style.left;
+    effectLevelInput.value = parseInt(effectLevelDepth.style.width, 10) / percentFromLevelLineWidth;
+
+    switchFilter(currentPreviewInputValue);
+
+  };
+
+  var onEffectLevelPinMouseUp = function () {
+    document.removeEventListener('mousemove', onEffectLevelPinMouseMove);
+    document.removeEventListener('mouseup', onEffectLevelPinMouseUp);
+  };
+
+  document.addEventListener('mousemove', onEffectLevelPinMouseMove);
+  document.addEventListener('mouseup', onEffectLevelPinMouseUp);
 });
 
 addPreviewEffectListeners(previewEffectsControls);
