@@ -7,16 +7,16 @@
   var SCALE_STEP = 25;
   var WIDTH_OF_LEVEL_LINE = 450;
 
-  window.uploadWindow = document.querySelector('.img-upload');
-  window.previewImage = window.uploadWindow.querySelector('.img-upload__preview').firstElementChild;
-  var scaleControl = window.uploadWindow.querySelector('.scale__control--value');
-  var scaleControlBigger = window.uploadWindow.querySelector('.scale__control--bigger');
-  var scaleControlSmaller = window.uploadWindow.querySelector('.scale__control--smaller');
-  window.effectLevel = window.uploadWindow.querySelector('.effect-level');
-  var effectLevelPin = window.uploadWindow.querySelector('.effect-level__pin');
-  var effectLevelDepth = window.uploadWindow.querySelector('.effect-level__depth');
-  var effectLevelInput = window.uploadWindow.querySelector('.effect-level__value');
-  var effects = window.uploadWindow.querySelector('.effects__list');
+  var uploadWindow = document.querySelector('.img-upload');
+  var previewImage = uploadWindow.querySelector('.img-upload__preview').firstElementChild;
+  var scaleControl = uploadWindow.querySelector('.scale__control--value');
+  var scaleControlBigger = uploadWindow.querySelector('.scale__control--bigger');
+  var scaleControlSmaller = uploadWindow.querySelector('.scale__control--smaller');
+  var effectLevel = uploadWindow.querySelector('.effect-level');
+  var effectLevelPin = uploadWindow.querySelector('.effect-level__pin');
+  var effectLevelDepth = uploadWindow.querySelector('.effect-level__depth');
+  var effectLevelInput = uploadWindow.querySelector('.effect-level__value');
+  var effects = uploadWindow.querySelector('.effects__list');
   var previewEffectsControls = effects.querySelectorAll('.effects__radio');
   var valueMax = effectLevelInput.max;
   var percentFromLevelLineWidth = WIDTH_OF_LEVEL_LINE / valueMax;
@@ -165,4 +165,7 @@
 
   addPreviewEffectListeners(previewEffectsControls);
 
+  window.uploadWindow = uploadWindow;
+  window.previewImage = previewImage;
+  window.effectLevel = effectLevel;
 })();
