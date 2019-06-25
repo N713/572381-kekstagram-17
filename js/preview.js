@@ -38,9 +38,9 @@
 
   var changeScale = function () {
     var currentScale = parseInt(scaleControl.value, 10);
-    window.previewImage.style.transform = 'scale( ' + (currentScale / 100) + ')';
+    previewImage.style.transform = 'scale( ' + (currentScale / 100) + ')';
 
-    return window.previewImage.style.transform;
+    return previewImage.style.transform;
   };
 
   var onScaleBiggerClick = function () {
@@ -54,12 +54,12 @@
   };
 
   var setControl = function (currentControl) {
-    window.previewImage.classList.add('effects__preview--' + currentControl);
-    window.effectLevel.classList.toggle('hidden', currentControl === 'none');
+    previewImage.classList.add('effects__preview--' + currentControl);
+    effectLevel.classList.toggle('hidden', currentControl === 'none');
     effectLevelPin.style.left = 100 + '%';
     effectLevelDepth.style.width = WIDTH_OF_LEVEL_LINE + 'px';
     effectLevelInput.value = valueMax;
-    window.previewImage.style.filter = '';
+    previewImage.style.filter = '';
   };
 
   var onPreviewControlClick = function (control) {
@@ -67,7 +67,7 @@
     if (currentPreviewInputValue !== control.value) {
 
       if (currentPreviewInputValue) {
-        window.previewImage.classList.remove('effects__preview--' + currentPreviewInputValue);
+        previewImage.classList.remove('effects__preview--' + currentPreviewInputValue);
       }
 
       currentPreviewInputValue = control.value;
@@ -110,7 +110,7 @@
         break;
     }
 
-    window.previewImage.style.filter = filter;
+    previewImage.style.filter = filter;
   };
 
   scaleControlBigger.addEventListener('click', function () {
