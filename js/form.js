@@ -55,6 +55,4 @@
   commentArea.addEventListener('focusout', function () {
     isCommentFocused = false;
   });
-
-
 })();
