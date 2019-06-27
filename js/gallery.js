@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-
+/*
   var NUMBER_OF_PHOTOS = 25;
 
   var picturesSection = document.querySelector('.pictures');
@@ -17,5 +17,8 @@
   };
 
   picturesSection.appendChild(addPicture(window.getPhotoDataArray(NUMBER_OF_PHOTOS)));
+
+
+ */
 
 })();
