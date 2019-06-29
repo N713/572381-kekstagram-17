@@ -9,7 +9,7 @@
     picturesSection.appendChild(window.addPictures(data));
   };
 
-  window.onErrorHandler = function (errorMessage) {
+  var onErrorHandler = function (errorMessage) {
     var node = document.createElement('div');
     node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
     node.style.position = 'absolute';
@@ -25,6 +25,6 @@
 
   window.pictureTemplate = pictureTemplate;
 
-  window.load(loadPhotoArray, window.onErrorHandler);
+  window.load(loadPhotoArray, onErrorHandler);
 
 })();
