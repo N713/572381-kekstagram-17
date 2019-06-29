@@ -106,7 +106,7 @@
         filter = 'blur(' + (effectLevelInput.value / 100) * 3 + 'px)';
         break;
       case 'heat':
-        filter = (effectLevelInput.value > 34) ? 'brightness(' + (effectLevelInput.value / 100) * 3 + ')' : 'brightness(' + 1 + ')';
+        filter = 'brightness(' + (((effectLevelInput.value / 100) * 2) + 1) + ')';
         break;
     }
 
