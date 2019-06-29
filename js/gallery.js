@@ -1,24 +1,15 @@
 'use strict';
 
 (function () {
-/*
-  var NUMBER_OF_PHOTOS = 25;
 
-  var picturesSection = document.querySelector('.pictures');
-
-  var addPicture = function (photoArray) {
+  window.addPicture = function (photos) {
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < photoArray.length; i++) {
-      fragment.appendChild(window.renderPicture(window.getPhotoDataArray(NUMBER_OF_PHOTOS)[i]));
+    for (var i = 0; i < photos.length; i++) {
+      fragment.appendChild(window.renderPicture(photos, i));
     }
 
     return fragment;
   };
-
-  picturesSection.appendChild(addPicture(window.getPhotoDataArray(NUMBER_OF_PHOTOS)));
-
-
- */
 
 })();

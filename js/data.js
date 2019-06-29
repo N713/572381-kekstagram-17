@@ -2,17 +2,15 @@
 
 (function () {
 
-  var alertError = function (message) {
-
-    alert(message);
-  };
+  var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
+  var picturesSection = document.querySelector('.pictures');
 
   var loadPhotoArray = function (data) {
-
-    console.log(data);
+    picturesSection.appendChild(window.addPicture(data));
   };
 
+  window.pictureTemplate = pictureTemplate;
 
-  window.load(loadPhotoArray, alertError);
+  window.load(loadPhotoArray, window.errorHandler);
 
 })();

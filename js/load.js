@@ -18,16 +18,30 @@
     });
 
     xhr.addEventListener('error', function () {
-      alert('Произошла ошибка соединения');
+      window.errorHandler('Произошла ошибка соединения');
     });
     xhr.addEventListener('timeout', function () {
-      alert('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
+      window.errorHandler('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
 
     xhr.timeout = 10000;
 
     xhr.open('GET', URL);
     xhr.send();
+  };
+
+  window.errorHandler = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
+    node.style.height = '30px';
+    node.style.borderBottom = '4px solid yellow';
+
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
   };
 
 })();
