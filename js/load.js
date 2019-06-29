@@ -18,10 +18,10 @@
     });
 
     xhr.addEventListener('error', function () {
-      window.errorHandler('Произошла ошибка соединения');
+      window.onErrorHappens('Произошла ошибка соединения');
     });
     xhr.addEventListener('timeout', function () {
-      window.errorHandler('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
+      window.onErrorHappens('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
 
     xhr.timeout = 10000;
@@ -30,7 +30,7 @@
     xhr.send();
   };
 
-  window.errorHandler = function (errorMessage) {
+  window.onErrorHappens = function (errorMessage) {
     var node = document.createElement('div');
     node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
     node.style.position = 'absolute';

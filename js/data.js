@@ -11,6 +11,6 @@
 
   window.pictureTemplate = pictureTemplate;
 
-  window.load(loadPhotoArray, window.errorHandler);
+  window.load(loadPhotoArray, window.onErrorHappens);
 
 })();
