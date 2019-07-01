@@ -81,21 +81,32 @@
     }
   };
 
+  var timeout;
+  var DEBOUNCE_TIME = 500;
+
+  var debounceFilter = function (array) {
+    if (timeout) {
+      window.clearTimeout(timeout);
+    }
+
+    timeout = window.setTimeout(function () {
+      deletePictures();
+      loadArray(array);
+    }, DEBOUNCE_TIME);
+  };
+
   buttonPopular.addEventListener('click', function () {
-    deletePictures();
-    loadArray(photos);
+    debounceFilter(photos);
     setFilterButtonClass(buttonPopular);
   });
 
   buttonNew.addEventListener('click', function () {
-    deletePictures();
-    loadArray(uniqueArray(getNewPhotos(photos)).slice(0, 10));
+    debounceFilter(uniqueArray(getNewPhotos(photos)).slice(0, 10));
     setFilterButtonClass(buttonNew);
   });
 
   buttonDiscussed.addEventListener('click', function () {
-    deletePictures();
-    loadArray(sortByComments().reverse());
+    debounceFilter(sortByComments().reverse());
     setFilterButtonClass(buttonDiscussed);
   });
 
