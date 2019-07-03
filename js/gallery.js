@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var picturesSection = document.querySelector('.pictures');
 
   window.addPictures = function (photos) {
     var fragment = document.createDocumentFragment();
@@ -11,5 +12,11 @@
 
     return fragment;
   };
+
+  window.render = function (array) {
+    picturesSection.appendChild(window.addPictures(array));
+  };
+
+  window.picturesSection = picturesSection;
 
 })();

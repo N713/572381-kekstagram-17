@@ -2,8 +2,10 @@
 
 (function () {
 
+  var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
+
   window.renderPicture = function (photoArrayElement, index) {
-    var picture = window.pictureTemplate.cloneNode(true);
+    var picture = pictureTemplate.cloneNode(true);
 
     picture.querySelector('.picture__img').src = photoArrayElement[index].url;
     picture.querySelector('.picture__comments').textContent = photoArrayElement[index].comments.length;
