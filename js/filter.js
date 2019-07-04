@@ -58,31 +58,26 @@
     }, DEBOUNCE_TIME);
   };
 
-  var onFilterClick = function (filter, debouncer, select) {
-    if (filter !== currentButton) {
-      debouncer();
-      select();
+  var onFilterClick = function (filter, renderPhotos) {
+    if (currentButton !== filter) {
+      debounce(renderPhotos);
+      selectButton(filter);
     }
   };
 
   filterButtons.forEach(function (filter) {
-    switch (filter.id) {
-      case 'filter-popular':
-        filter.addEventListener('click', function () {
-          onFilterClick(filter, debounce(renderPopular), selectButton(filter));
-        });
-        break;
-      case 'filter-new':
-        filter.addEventListener('click', function () {
-          onFilterClick(filter, debounce(renderNew), selectButton(filter));
-        });
-        break;
-      case 'filter-discussed':
-        filter.addEventListener('click', function () {
-          onFilterClick(filter, debounce(renderDiscussed), selectButton(filter));
-        });
-        break;
-    }
+    filter.addEventListener('click', function () {
+      switch (filter.id) {
+        case 'filter-popular':
+          onFilterClick(filter, renderPopular);
+          break;
+        case 'filter-new':
+          onFilterClick(filter, renderNew);
+          break;
+        case 'filter-discussed':
+          onFilterClick(filter, renderDiscussed);
+          break;
+      }
+    });
   });
-
 })();
