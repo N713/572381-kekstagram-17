@@ -61,18 +61,24 @@
   };
 
   buttonPopular.addEventListener('click', function () {
-    debounce(renderPopular);
-    selectButton(buttonPopular);
+    if (currentButton !== buttonPopular) {
+      debounce(renderPopular);
+      selectButton(buttonPopular);
+    }
   });
 
   buttonNew.addEventListener('click', function () {
-    debounce(renderNew);
-    selectButton(buttonNew);
+    if (currentButton !== buttonNew) {
+      debounce(renderNew);
+      selectButton(buttonNew);
+    }
   });
 
   buttonDiscussed.addEventListener('click', function () {
-    debounce(renderDiscussed);
-    selectButton(buttonDiscussed);
+    if (currentButton !== buttonDiscussed) {
+      debounce(renderDiscussed);
+      selectButton(buttonDiscussed);
+    }
   });
 
 })();
