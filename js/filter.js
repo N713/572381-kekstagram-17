@@ -4,9 +4,7 @@
   var DEBOUNCE_TIME = 500;
 
   var timeout;
-  var buttonPopular = document.querySelector('#filter-popular');
-  var buttonNew = document.querySelector('#filter-new');
-  var buttonDiscussed = document.querySelector('#filter-discussed');
+  var filterButtons = document.querySelectorAll('.img-filters__button');
   var currentButton = document.querySelector('.img-filters__button--active');
 
   var deletePictures = function () {
@@ -29,9 +27,9 @@
     return Math.random() - 0.5;
   };
 
-  var selectButton = function (buttonName) {
+  var selectButton = function (button) {
     currentButton.classList.remove('img-filters__button--active');
-    currentButton = buttonName;
+    currentButton = button;
     currentButton.classList.add('img-filters__button--active');
   };
 
@@ -60,24 +58,30 @@
     }, DEBOUNCE_TIME);
   };
 
-  buttonPopular.addEventListener('click', function () {
-    if (currentButton !== buttonPopular) {
-      debounce(renderPopular);
-      selectButton(buttonPopular);
+  var onFilterClick = function (filter, debouncer, select) {
+    if (filter !== currentButton) {
+      debouncer();
+      select();
     }
-  });
+  };
 
-  buttonNew.addEventListener('click', function () {
-    if (currentButton !== buttonNew) {
-      debounce(renderNew);
-      selectButton(buttonNew);
-    }
-  });
-
-  buttonDiscussed.addEventListener('click', function () {
-    if (currentButton !== buttonDiscussed) {
-      debounce(renderDiscussed);
-      selectButton(buttonDiscussed);
+  filterButtons.forEach(function (filter) {
+    switch (filter.id) {
+      case 'filter-popular':
+        filter.addEventListener('click', function () {
+          onFilterClick(filter, debounce(renderPopular), selectButton(filter));
+        });
+        break;
+      case 'filter-new':
+        filter.addEventListener('click', function () {
+          onFilterClick(filter, debounce(renderNew), selectButton(filter));
+        });
+        break;
+      case 'filter-discussed':
+        filter.addEventListener('click', function () {
+          onFilterClick(filter, debounce(renderDiscussed), selectButton(filter));
+        });
+        break;
     }
   });
 
