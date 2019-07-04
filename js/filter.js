@@ -1,13 +1,13 @@
 'use strict';
 
 (function () {
-
   var DEBOUNCE_TIME = 500;
 
   var timeout;
   var buttonPopular = document.querySelector('#filter-popular');
   var buttonNew = document.querySelector('#filter-new');
   var buttonDiscussed = document.querySelector('#filter-discussed');
+  var currentButton = document.querySelector('.img-filters__button--active');
 
   var deletePictures = function () {
     var pictures = window.picturesSection.querySelectorAll('.picture');
@@ -29,50 +29,50 @@
     return Math.random() - 0.5;
   };
 
-  var setFilterButtonClass = function (buttonName) {
-    var currentButton = document.querySelector('.img-filters__button--active');
+  var selectButton = function (buttonName) {
     currentButton.classList.remove('img-filters__button--active');
-    buttonName.classList.add('img-filters__button--active');
+    currentButton = buttonName;
+    currentButton.classList.add('img-filters__button--active');
   };
 
   var renderPopular = function () {
     deletePictures();
-    window.render(window.photos);
+    window.renderPhotos(window.photos);
   };
 
   var renderNew = function () {
     deletePictures();
-    window.render(window.photos.sort(compareRandom).slice(0, 10));
+    window.renderPhotos(window.photos.slice().sort(compareRandom).slice(0, 10));
   };
 
   var renderDiscussed = function () {
     deletePictures();
-    window.render(sortByComments().reverse());
+    window.renderPhotos(sortByComments().reverse());
   };
 
-  var debounceButton = function (doByTimeout) {
+  var debounce = function (callback) {
     if (timeout) {
       window.clearTimeout(timeout);
     }
 
     timeout = window.setTimeout(function () {
-      doByTimeout();
+      callback();
     }, DEBOUNCE_TIME);
   };
 
   buttonPopular.addEventListener('click', function () {
-    debounceButton(renderPopular);
-    setFilterButtonClass(buttonPopular);
+    debounce(renderPopular);
+    selectButton(buttonPopular);
   });
 
   buttonNew.addEventListener('click', function () {
-    debounceButton(renderNew);
-    setFilterButtonClass(buttonNew);
+    debounce(renderNew);
+    selectButton(buttonNew);
   });
 
   buttonDiscussed.addEventListener('click', function () {
-    debounceButton(renderDiscussed);
-    setFilterButtonClass(buttonDiscussed);
+    debounce(renderDiscussed);
+    selectButton(buttonDiscussed);
   });
 
 })();
