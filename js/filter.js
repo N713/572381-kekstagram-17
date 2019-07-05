@@ -56,21 +56,25 @@
     window.renderPhotos(filteredPhotos);
   };
 
+  var chooseFilteredPhotos = function (filter) {
+
+    switch (filter.id) {
+      case 'filter-popular':
+        filteredPhotos = window.photos;
+        break;
+      case 'filter-new':
+        filteredPhotos = window.photos.slice().sort(compareRandom).slice(0, 10);
+        break;
+      case 'filter-discussed':
+        filteredPhotos = sortByComments().reverse();
+        break;
+    }
+
+  };
+
   filterButtons.forEach(function (filter) {
     filter.addEventListener('click', function () {
-
-      switch (filter.id) {
-        case 'filter-popular':
-          filteredPhotos = window.photos;
-          break;
-        case 'filter-new':
-          filteredPhotos = window.photos.slice().sort(compareRandom).slice(0, 10);
-          break;
-        case 'filter-discussed':
-          filteredPhotos = sortByComments().reverse();
-          break;
-      }
-
+      chooseFilteredPhotos(filter);
       onFilterClick(filter, makeFiltration);
     });
   });
