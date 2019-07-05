@@ -4,7 +4,6 @@
   var DEBOUNCE_TIME = 500;
 
   var timeout;
-  var filteredPhotos;
   var filterButtons = document.querySelectorAll('.img-filters__button');
   var currentButton = document.querySelector('.img-filters__button--active');
 
@@ -44,19 +43,8 @@
     }, DEBOUNCE_TIME);
   };
 
-  var onFilterClick = function (filter, renderPhotos) {
-    if (currentButton !== filter) {
-      debounce(renderPhotos);
-      selectButton(filter);
-    }
-  };
-
-  var makeFiltration = function () {
-    deletePictures();
-    window.renderPhotos(filteredPhotos);
-  };
-
-  var chooseFilteredPhotos = function (filter) {
+  var onFilterClick = function (filter) {
+    var filteredPhotos;
 
     switch (filter.id) {
       case 'filter-popular':
@@ -70,12 +58,20 @@
         break;
     }
 
+    if (currentButton !== filter) {
+      debounce(function () {
+        deletePictures();
+        window.renderPhotos(filteredPhotos);
+      });
+
+      selectButton(filter);
+    }
   };
 
   filterButtons.forEach(function (filter) {
     filter.addEventListener('click', function () {
-      chooseFilteredPhotos(filter);
-      onFilterClick(filter, makeFiltration);
+      onFilterClick(filter);
     });
   });
+
 })();
