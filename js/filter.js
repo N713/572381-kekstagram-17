@@ -43,10 +43,10 @@
     }, DEBOUNCE_TIME);
   };
 
-  var onFilterClick = function (filter) {
+  var onFilterClick = function (filterButton) {
     var filteredPhotos;
 
-    switch (filter.id) {
+    switch (filterButton.id) {
       case 'filter-popular':
         filteredPhotos = window.photos;
         break;
@@ -58,19 +58,19 @@
         break;
     }
 
-    if (currentButton !== filter) {
+    if (currentButton !== filterButton) {
       debounce(function () {
         deletePictures();
         window.renderPhotos(filteredPhotos);
       });
 
-      selectButton(filter);
+      selectButton(filterButton);
     }
   };
 
-  filterButtons.forEach(function (filter) {
-    filter.addEventListener('click', function () {
-      onFilterClick(filter);
+  filterButtons.forEach(function (filterButton) {
+    filterButton.addEventListener('click', function () {
+      onFilterClick(filterButton);
     });
   });
 
