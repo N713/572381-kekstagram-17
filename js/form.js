@@ -55,4 +55,6 @@
   commentArea.addEventListener('focusout', function () {
     isCommentFocused = false;
   });
+
+  window.ESC_KEYCODE = ESC_KEYCODE;
 })();
