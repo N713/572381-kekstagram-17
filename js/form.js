@@ -14,9 +14,10 @@
   var uploadForm = window.uploadWindow.querySelector('.img-upload__form');
   var submitButton = uploadPreview.querySelector('.img-upload__submit');
   var hashtagsField = uploadPreview.querySelector('.text__hashtags');
+  var hashtagsErrors = [];
   var isCommentFocused = false;
   var isHashtagsFocused = false;
-  var hashtagsErrors = [];
+  var isErrors = false;
 
   var setStartEffects = function () {
     window.previewImage.classList.add('effects__preview--none');
@@ -55,10 +56,8 @@
 
     hashtags.forEach(function (hashtag) {
 
-      if (hashtag !== '') {
-        if (hashtag.charAt(0) !== '#') {
-          hashtagsErrors.push('Хэш-тег ' + hashtag + ' должен начинается с символа # (решётка)');
-        }
+      if (hashtag !== '' && hashtag.charAt(0) !== '#') {
+        hashtagsErrors.push('Хэш-тег ' + hashtag + ' должен начинается с символа # (решётка)');
       }
 
       if (hashtag === '#') {
@@ -77,7 +76,7 @@
       }
 
       if (nonSeparated) {
-        hashtagsErrors.push('Хэш-теги ' + hashtag + 'должны разделяться пробелами');
+        hashtagsErrors.push('Хэш-теги ' + hashtag + ' должны разделяться пробелами');
       }
 
     });
@@ -86,6 +85,25 @@
       if (hashtags.lastIndexOf(hashtags[j].toLowerCase()) !== j) {
         hashtagsErrors.push('Один и тот же хэш-тег (' + hashtags[j] + ') не может быть использован дважды');
       }
+    }
+  };
+
+  var onSubmitClick = function () {
+    hashtagsErrors.length = 0;
+    checkHashtagsErrors();
+
+    if (hashtagsErrors.length > 0) {
+      hashtagsField.setCustomValidity(hashtagsErrors.join(', '));
+      isErrors = true;
+    } else {
+      hashtagsField.setCustomValidity('');
+      isErrors = false;
+    }
+  };
+
+  var onSubmit = function (evt) {
+    if (isErrors) {
+      evt.preventDefault();
     }
   };
 
@@ -115,9 +133,12 @@
     isHashtagsFocused = false;
   });
 
-  submitButton.addEventListener('click', function (evt) {
-    evt.preventDefault();
+  submitButton.addEventListener('click', function () {
+    onSubmitClick();
+  });
 
+  uploadForm.addEventListener('submit', function (evt) {
+    onSubmit(evt);
   });
 
   window.ESC_KEYCODE = ESC_KEYCODE;
