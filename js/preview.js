@@ -22,6 +22,12 @@
   var percentFromLevelLineWidth = WIDTH_OF_LEVEL_LINE / valueMax;
   var currentPreviewInputValue = null;
 
+  window.setStartEffects = function () {
+    previewImage.classList.add('effects__preview--none');
+    previewImage.style.filter = 'none';
+    previewImage.style.transform = 'scale(1)';
+  };
+
   var increaseScaleValue = function () {
     var scaleStep = (scaleControl.value === MAX_SCALE_VALUE + '%') ? 0 : SCALE_STEP;
     scaleControl.value = (parseInt(scaleControl.value, 10) + scaleStep) + '%';
