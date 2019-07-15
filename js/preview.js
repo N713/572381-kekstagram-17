@@ -31,22 +31,16 @@
   var increaseScaleValue = function () {
     var scaleStep = (scaleControl.value === MAX_SCALE_VALUE + '%') ? 0 : SCALE_STEP;
     scaleControl.value = (parseInt(scaleControl.value, 10) + scaleStep) + '%';
-
-    return scaleControl.value;
   };
 
   var decreaseScaleValue = function () {
     var scaleStep = (scaleControl.value === MIN_SCALE_VALUE + '%') ? 0 : SCALE_STEP;
     scaleControl.value = (parseInt(scaleControl.value, 10) - scaleStep) + '%';
-
-    return scaleControl.value;
   };
 
   var changeScale = function () {
     var currentScale = parseInt(scaleControl.value, 10);
     previewImage.style.transform = 'scale( ' + (currentScale / 100) + ')';
-
-    return previewImage.style.transform;
   };
 
   var onScaleBiggerClick = function () {
@@ -59,7 +53,7 @@
     changeScale();
   };
 
-  var setControl = function (currentControl) {
+  var changeControl = function (currentControl) {
     previewImage.classList.add('effects__preview--' + currentControl);
     effectLevel.classList.toggle('hidden', currentControl === 'none');
     effectLevelPin.style.left = 100 + '%';
@@ -77,14 +71,14 @@
       }
 
       currentPreviewInputValue = control.value;
-      setControl(currentPreviewInputValue);
+      changeControl(currentPreviewInputValue);
     } else {
-      setControl(control.value);
+      changeControl(control.value);
     }
   };
 
   var addPreviewListener = function (effectControl) {
-    effectControl.addEventListener('click', function () {
+    effectControl.addEventListener('change', function () {
       onPreviewControlClick(effectControl);
     });
   };
