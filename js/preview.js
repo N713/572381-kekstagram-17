@@ -8,7 +8,7 @@
   var WIDTH_OF_LEVEL_LINE = 450;
 
   var uploadWindow = document.querySelector('.img-upload');
-  var previewImage = uploadWindow.querySelector('.img-upload__preview img')
+  var previewImage = uploadWindow.querySelector('.img-upload__preview img');
   var scaleControl = uploadWindow.querySelector('.scale__control--value');
   var scaleControlBigger = uploadWindow.querySelector('.scale__control--bigger');
   var scaleControlSmaller = uploadWindow.querySelector('.scale__control--smaller');

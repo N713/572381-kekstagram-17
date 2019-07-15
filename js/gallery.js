@@ -24,8 +24,6 @@
     window.photos = photosData;
     filters.classList.remove('img-filters--inactive');
     window.renderPhotos(window.photos);
-
-    console.log(photosData);
   };
 
   picturesSection.addEventListener('keydown', function (evt) {
