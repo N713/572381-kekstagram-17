@@ -8,7 +8,7 @@
   var WIDTH_OF_LEVEL_LINE = 450;
 
   var uploadWindow = document.querySelector('.img-upload');
-  var previewImage = uploadWindow.querySelector('.img-upload__preview').firstElementChild;
+  var previewImage = uploadWindow.querySelector('.img-upload__preview img')
   var scaleControl = uploadWindow.querySelector('.scale__control--value');
   var scaleControlBigger = uploadWindow.querySelector('.scale__control--bigger');
   var scaleControlSmaller = uploadWindow.querySelector('.scale__control--smaller');
@@ -90,9 +90,9 @@
   };
 
   var addPreviewEffectListeners = function (effectsControls) {
-    for (var i = 0; i < effectsControls.length; i++) {
-      addPreviewListener(effectsControls[i]);
-    }
+    effectsControls.forEach(function (effectControl) {
+      addPreviewListener(effectControl);
+    });
   };
 
   var switchFilter = function (currentFilter) {

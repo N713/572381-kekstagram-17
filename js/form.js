@@ -94,7 +94,6 @@
       hashtagsField.setCustomValidity('');
       isErrors = false;
     }
-
   };
 
   var onSubmit = function (evt) {

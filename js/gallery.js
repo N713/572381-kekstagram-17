@@ -9,9 +9,9 @@
   var addPictures = function (photosData) {
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < photosData.length; i++) {
-      fragment.appendChild(window.renderPicture(photosData, i));
-    }
+    photosData.forEach(function (photoData) {
+      fragment.appendChild(window.renderPicture(photoData));
+    });
 
     return fragment;
   };
@@ -24,7 +24,15 @@
     window.photos = photosData;
     filters.classList.remove('img-filters--inactive');
     window.renderPhotos(window.photos);
+
+    console.log(photosData);
   };
+
+  picturesSection.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === window.ESC_KEYCODE) {
+      window.bigPicture.classList.add('hidden');
+    }
+  });
 
   window.picturesSection = picturesSection;
   window.load(activateFilters, window.onErrorHandler);
