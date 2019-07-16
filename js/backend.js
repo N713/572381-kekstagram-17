@@ -4,6 +4,24 @@
   var URL = 'https://js.dump.academy/kekstagram/data';
   var UPLOAD_URL = 'https://js.dump.academy/kekstagram';
 
+  var succesTemplate = document.querySelector('#success').content.querySelector('.success');
+  var errorTemplate = document.querySelector('#error').content.querySelector('.error');
+  var uploadTemplate = document.querySelector('#messages').content.querySelector('.img-upload__message');
+  var main = document.querySelector('main');
+
+  var succesButton = succesTemplate.querySelector('.success__button');
+  var errorButtons = errorTemplate.querySelectorAll('.error__button');
+
+  errorButtons.forEach(function (button) {
+    button.addEventListener('click', function () {
+      main.removeChild(errorTemplate);
+    });
+  });
+
+  succesButton.addEventListener('click', function () {
+    main.removeChild(succesTemplate);
+  });
+
   window.load = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
 
@@ -34,8 +52,27 @@
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
+    xhr.addEventListener('loadstart', function () {
+      main.appendChild(uploadTemplate);
+    });
+
+    xhr.addEventListener('loadend', function () {
+      main.removeChild(uploadTemplate);
+    });
+
     xhr.addEventListener('load', function () {
-      onSuccess(xhr.response);
+      if (xhr.status === 200) {
+        onSuccess(xhr.response);
+        main.appendChild(succesTemplate);
+      } else {
+        window.uploadPreview.classList.add('hidden');
+        main.appendChild(errorTemplate);
+      }
+    });
+
+    xhr.addEventListener('error', function () {
+      window.uploadPreview.classList.add('hidden');
+      main.appendChild(errorTemplate);
     });
 
     xhr.open('POST', UPLOAD_URL);
@@ -55,5 +92,7 @@
     node.textContent = errorMessage;
     document.body.insertAdjacentElement('afterbegin', node);
   };
+
+
 
 })();

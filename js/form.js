@@ -14,6 +14,7 @@
   var uploadForm = window.uploadWindow.querySelector('.img-upload__form');
   var submitButton = uploadPreview.querySelector('.img-upload__submit');
   var hashtagsField = uploadPreview.querySelector('.text__hashtags');
+
   var hashtagsErrors = [];
   var isCommentFocused = false;
   var isHashtagsFocused = false;
@@ -101,6 +102,13 @@
     if (isErrors) {
       evt.preventDefault();
     }
+
+    window.upload(new FormData(uploadForm), function () {
+      uploadPreview.classList.add('hidden');
+      resetFormValues();
+    });
+
+    evt.preventDefault();
   };
 
   var resetFormValues = function () {
@@ -143,13 +151,8 @@
 
   uploadForm.addEventListener('submit', function (evt) {
     onSubmit(evt);
-
-    window.upload(new FormData(uploadForm), function () {
-      uploadPreview.classList.add('hidden');
-      resetFormValues();
-    });
-    evt.preventDefault();
   });
 
+  window.uploadPreview = uploadPreview;
   window.ESC_KEYCODE = ESC_KEYCODE;
 })();
