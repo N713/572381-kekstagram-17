@@ -2,7 +2,7 @@
 
 (function () {
   var URL = 'https://js.dump.academy/kekstagram/data';
-  var UPLOAD_URL = 'https://js.dump.academy/kekstagram';
+  var UPLOAD_URL = 'https://js.dump.academy/kekstagrammm';
 
   var succesTemplate = document.querySelector('#success').content.querySelector('.success');
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
@@ -21,6 +21,18 @@
   succesButton.addEventListener('click', function () {
     main.removeChild(succesTemplate);
   });
+
+  var onSuccessEscPress = function (evt) {
+    if (evt.keyCode === window.ESC_KEYCODE) {
+      main.removeChild(succesTemplate);
+    }
+  };
+
+  var onErrorEscPress = function (evt) {
+    if (evt.keyCode === window.ESC_KEYCODE) {
+      main.removeChild(errorTemplate);
+    }
+  };
 
   window.load = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
@@ -64,15 +76,33 @@
       if (xhr.status === 200) {
         onSuccess(xhr.response);
         main.appendChild(succesTemplate);
+
+        document.addEventListener('click', function () {
+          main.removeChild(succesTemplate);
+        });
+
+        document.addEventListener('keydown', onSuccessEscPress);
       } else {
         window.uploadPreview.classList.add('hidden');
         main.appendChild(errorTemplate);
+
+        document.addEventListener('click', function () {
+          main.removeChild(errorTemplate);
+        });
+
+        document.addEventListener('keydown', onErrorEscPress);
       }
     });
 
     xhr.addEventListener('error', function () {
       window.uploadPreview.classList.add('hidden');
       main.appendChild(errorTemplate);
+
+      document.addEventListener('click', function () {
+        main.removeChild(errorTemplate);
+      });
+
+      document.addEventListener('keydown', onErrorEscPress);
     });
 
     xhr.open('POST', UPLOAD_URL);
@@ -92,7 +122,5 @@
     node.textContent = errorMessage;
     document.body.insertAdjacentElement('afterbegin', node);
   };
-
-
 
 })();
