@@ -18,11 +18,13 @@
   var effectLevelInput = uploadWindow.querySelector('.effect-level__value');
   var effects = uploadWindow.querySelector('.effects__list');
   var previewEffectsControls = effects.querySelectorAll('.effects__radio');
+  var inputRadioNone = uploadWindow.querySelector('#effect-none');
   var valueMax = effectLevelInput.max;
   var percentFromLevelLineWidth = WIDTH_OF_LEVEL_LINE / valueMax;
   var currentPreviewInputValue = null;
 
   window.setStartEffects = function () {
+    inputRadioNone.checked = 'true';
     previewImage.classList.add('effects__preview--none');
     previewImage.style.filter = 'none';
     previewImage.style.transform = 'scale(1)';
@@ -168,4 +170,11 @@
   window.uploadWindow = uploadWindow;
   window.previewImage = previewImage;
   window.effectLevel = effectLevel;
+  window.scaleControl = scaleControl;
+  window.effectLevelInput = effectLevelInput;
+
+  /*
+  var scaleControl = uploadWindow.querySelector('.scale__control--value');
+  var effectLevelInput = uploadWindow.querySelector('.effect-level__value');
+   */
 })();

@@ -31,6 +31,7 @@
   };
 
   var onUploadInputChange = function () {
+    window.setStartEffects();
     openUploadPreview();
   };
 
@@ -102,6 +103,15 @@
     }
   };
 
+  var resetFormValues = function () {
+    window.setStartEffects();
+    window.scaleControl.value = '100';
+    window.effectLevelInput.value = 100;
+    commentArea.value = '';
+    hashtagsField.value = '';
+    uploadInput.value = '';
+  };
+
   uploadInput.addEventListener('change', function () {
     onUploadInputChange();
   });
@@ -109,7 +119,6 @@
   uploadCancelButton.addEventListener('click', function () {
     closeUploadPreview();
     uploadForm.reset();
-    window.setStartEffects();
   });
 
   commentArea.addEventListener('focus', function () {
@@ -137,6 +146,7 @@
 
     window.upload(new FormData(uploadForm), function () {
       uploadPreview.classList.add('hidden');
+      resetFormValues();
     });
     evt.preventDefault();
   });
