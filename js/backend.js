@@ -2,6 +2,7 @@
 
 (function () {
   var URL = 'https://js.dump.academy/kekstagram/data';
+  var UPLOAD_URL = 'https://js.dump.academy/kekstagram';
 
   window.load = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
@@ -27,6 +28,18 @@
 
     xhr.open('GET', URL);
     xhr.send();
+  };
+
+  window.upload = function (data, onSuccess) {
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'json';
+
+    xhr.addEventListener('load', function () {
+      onSuccess(xhr.response);
+    });
+
+    xhr.open('POST', UPLOAD_URL);
+    xhr.send(data);
   };
 
   window.onErrorHandler = function (errorMessage) {

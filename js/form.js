@@ -48,7 +48,7 @@
       }
     }
 
-    if (hashtag.indexOf('#') !== 0) {
+    if (hashtag && hashtag.indexOf('#') !== 0) {
       hashtagsErrors.push('Хэш-тег ' + hashtag + ' должен начинается с символа # (решётка)');
     } else if (hashtag === '#') {
       hashtagsErrors.push('Хеш-тег не может состоять только из одной решётки');
@@ -134,6 +134,10 @@
 
   uploadForm.addEventListener('submit', function (evt) {
     onSubmit(evt);
+    window.upload(new FormData(uploadForm), function (response) {
+      uploadForm.classList.add('hidden');
+    });
+    evt.preventDefault();
   });
 
   window.ESC_KEYCODE = ESC_KEYCODE;
