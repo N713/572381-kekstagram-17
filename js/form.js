@@ -134,8 +134,9 @@
 
   uploadForm.addEventListener('submit', function (evt) {
     onSubmit(evt);
-    window.upload(new FormData(uploadForm), function (response) {
-      uploadForm.classList.add('hidden');
+
+    window.upload(new FormData(uploadForm), function () {
+      uploadPreview.classList.add('hidden');
     });
     evt.preventDefault();
   });

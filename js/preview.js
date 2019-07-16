@@ -29,12 +29,12 @@
   };
 
   var increaseScaleValue = function () {
-    var scaleStep = (scaleControl.value === MAX_SCALE_VALUE + '%') ? 0 : SCALE_STEP;
+    var scaleStep = (parseInt(scaleControl.value, 10) === MAX_SCALE_VALUE) ? 0 : SCALE_STEP;
     scaleControl.value = (parseInt(scaleControl.value, 10) + scaleStep);
   };
 
   var decreaseScaleValue = function () {
-    var scaleStep = (scaleControl.value === MIN_SCALE_VALUE + '%') ? 0 : SCALE_STEP;
+    var scaleStep = (parseInt(scaleControl.value, 10) === MIN_SCALE_VALUE) ? 0 : SCALE_STEP;
     scaleControl.value = (parseInt(scaleControl.value, 10) - scaleStep);
   };
 
