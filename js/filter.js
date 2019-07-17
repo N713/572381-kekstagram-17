@@ -15,9 +15,9 @@
     });
   };
 
-  var sortByComments = function () {
+  var sortByCommentsReverse = function () {
     var sorted = window.photos.slice().sort(function (first, second) {
-      return first.comments.length - second.comments.length;
+      return second.comments.length - first.comments.length;
     });
 
     return sorted;
@@ -54,7 +54,7 @@
         filteredPhotos = window.photos.slice().sort(compareRandom).slice(0, 10);
         break;
       case 'filter-discussed':
-        filteredPhotos = sortByComments().reverse();
+        filteredPhotos = sortByCommentsReverse();
         break;
     }
 

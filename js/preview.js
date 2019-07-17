@@ -8,7 +8,7 @@
   var WIDTH_OF_LEVEL_LINE = 450;
 
   var uploadWindow = document.querySelector('.img-upload');
-  var previewImage = uploadWindow.querySelector('.img-upload__preview').firstElementChild;
+  var previewImage = uploadWindow.querySelector('.img-upload__preview img');
   var scaleControl = uploadWindow.querySelector('.scale__control--value');
   var scaleControlBigger = uploadWindow.querySelector('.scale__control--bigger');
   var scaleControlSmaller = uploadWindow.querySelector('.scale__control--smaller');
@@ -18,29 +18,31 @@
   var effectLevelInput = uploadWindow.querySelector('.effect-level__value');
   var effects = uploadWindow.querySelector('.effects__list');
   var previewEffectsControls = effects.querySelectorAll('.effects__radio');
+  var inputRadioNone = uploadWindow.querySelector('#effect-none');
   var valueMax = effectLevelInput.max;
   var percentFromLevelLineWidth = WIDTH_OF_LEVEL_LINE / valueMax;
   var currentPreviewInputValue = null;
 
-  var increaseScaleValue = function () {
-    var scaleStep = (scaleControl.value === MAX_SCALE_VALUE + '%') ? 0 : SCALE_STEP;
-    scaleControl.value = (parseInt(scaleControl.value, 10) + scaleStep) + '%';
+  window.setStartEffects = function () {
+    inputRadioNone.checked = 'true';
+    previewImage.classList.add('effects__preview--none');
+    previewImage.style.filter = 'none';
+    previewImage.style.transform = 'scale(1)';
+  };
 
-    return scaleControl.value;
+  var increaseScaleValue = function () {
+    var scaleStep = (parseInt(scaleControl.value, 10) === MAX_SCALE_VALUE) ? 0 : SCALE_STEP;
+    scaleControl.value = (parseInt(scaleControl.value, 10) + scaleStep);
   };
 
   var decreaseScaleValue = function () {
-    var scaleStep = (scaleControl.value === MIN_SCALE_VALUE + '%') ? 0 : SCALE_STEP;
-    scaleControl.value = (parseInt(scaleControl.value, 10) - scaleStep) + '%';
-
-    return scaleControl.value;
+    var scaleStep = (parseInt(scaleControl.value, 10) === MIN_SCALE_VALUE) ? 0 : SCALE_STEP;
+    scaleControl.value = (parseInt(scaleControl.value, 10) - scaleStep);
   };
 
   var changeScale = function () {
     var currentScale = parseInt(scaleControl.value, 10);
     previewImage.style.transform = 'scale( ' + (currentScale / 100) + ')';
-
-    return previewImage.style.transform;
   };
 
   var onScaleBiggerClick = function () {
@@ -53,7 +55,7 @@
     changeScale();
   };
 
-  var setControl = function (currentControl) {
+  var changeControl = function (currentControl) {
     previewImage.classList.add('effects__preview--' + currentControl);
     effectLevel.classList.toggle('hidden', currentControl === 'none');
     effectLevelPin.style.left = 100 + '%';
@@ -71,22 +73,22 @@
       }
 
       currentPreviewInputValue = control.value;
-      setControl(currentPreviewInputValue);
+      changeControl(currentPreviewInputValue);
     } else {
-      setControl(control.value);
+      changeControl(control.value);
     }
   };
 
   var addPreviewListener = function (effectControl) {
-    effectControl.addEventListener('click', function () {
+    effectControl.addEventListener('change', function () {
       onPreviewControlClick(effectControl);
     });
   };
 
   var addPreviewEffectListeners = function (effectsControls) {
-    for (var i = 0; i < effectsControls.length; i++) {
-      addPreviewListener(effectsControls[i]);
-    }
+    effectsControls.forEach(function (effectControl) {
+      addPreviewListener(effectControl);
+    });
   };
 
   var switchFilter = function (currentFilter) {
@@ -168,4 +170,11 @@
   window.uploadWindow = uploadWindow;
   window.previewImage = previewImage;
   window.effectLevel = effectLevel;
+  window.scaleControl = scaleControl;
+  window.effectLevelInput = effectLevelInput;
+
+  /*
+  var scaleControl = uploadWindow.querySelector('.scale__control--value');
+  var effectLevelInput = uploadWindow.querySelector('.effect-level__value');
+   */
 })();

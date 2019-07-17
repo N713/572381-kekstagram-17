@@ -2,6 +2,7 @@
 
 (function () {
   var URL = 'https://js.dump.academy/kekstagram/data';
+  var UPLOAD_URL = 'https://js.dump.academy/kekstagramm';
 
   window.load = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
@@ -27,6 +28,37 @@
 
     xhr.open('GET', URL);
     xhr.send();
+  };
+
+  window.upload = function (data, onSuccess) {
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'json';
+
+    xhr.addEventListener('loadstart', function () {
+      window.main.appendChild(window.uploadTemplate);
+    });
+
+    xhr.addEventListener('loadend', function () {
+      window.main.removeChild(window.uploadTemplate);
+    });
+
+    xhr.addEventListener('load', function () {
+      if (xhr.status === 200) {
+        onSuccess(xhr.response);
+        window.addPopupHandlers(window.succesTemplate, window.onSuccessEscPress);
+      } else {
+        window.uploadPreview.classList.add('hidden');
+        window.addPopupHandlers(window.errorTemplate, window.onErrorEscPress);
+      }
+    });
+
+    xhr.addEventListener('error', function () {
+      window.uploadPreview.classList.add('hidden');
+      window.addPopupHandlers(window.errorTemplate, window.onErrorEscPress);
+    });
+
+    xhr.open('POST', UPLOAD_URL);
+    xhr.send(data);
   };
 
   window.onErrorHandler = function (errorMessage) {

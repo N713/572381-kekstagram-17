@@ -14,16 +14,11 @@
   var uploadForm = window.uploadWindow.querySelector('.img-upload__form');
   var submitButton = uploadPreview.querySelector('.img-upload__submit');
   var hashtagsField = uploadPreview.querySelector('.text__hashtags');
+
   var hashtagsErrors = [];
   var isCommentFocused = false;
   var isHashtagsFocused = false;
   var isErrors = false;
-
-  var setStartEffects = function () {
-    window.previewImage.classList.add('effects__preview--none');
-    window.previewImage.style.filter = 'none';
-    window.previewImage.style.transform = 'scale(1)';
-  };
 
   var openUploadPreview = function () {
     uploadPreview.classList.remove('hidden');
@@ -37,6 +32,7 @@
   };
 
   var onUploadInputChange = function () {
+    window.setStartEffects();
     openUploadPreview();
   };
 
@@ -44,6 +40,27 @@
     if (evt.keyCode === ESC_KEYCODE && !isCommentFocused && !isHashtagsFocused) {
       closeUploadPreview();
     }
+  };
+
+  var checkHashtag = function (hashtag) {
+
+    for (var i = 0; i < hashtag.length; i++) {
+      if (hashtag.charAt(i + EXCLUDE_FIRST) === '#') {
+        var nonSeparated = true;
+      }
+    }
+
+    if (hashtag && hashtag.indexOf('#') !== 0) {
+      hashtagsErrors.push('Хэш-тег ' + hashtag + ' должен начинается с символа # (решётка)');
+    } else if (hashtag === '#') {
+      hashtagsErrors.push('Хеш-тег не может состоять только из одной решётки');
+    } else if (hashtag.length > MAX_HASHTAG_LENGTH) {
+      hashtagsErrors.push('Максимальная длина хэш-тега ' + hashtag + 'должна быть ' +
+        MAX_HASHTAG_LENGTH + ' символов, включая решётку');
+    } else if (nonSeparated) {
+      hashtagsErrors.push('Хэш-теги ' + hashtag + ' должны разделяться пробелами');
+    }
+
   };
 
   var checkHashtagsErrors = function () {
@@ -54,38 +71,18 @@
       hashtagsErrors.push('Нельзя указать больше ' + MAX_HASHTAGS_NUMBER + ' хэш-тегов');
     }
 
-    hashtags.forEach(function (hashtag) {
-
-      if (hashtag !== '' && hashtag.charAt(0) !== '#') {
-        hashtagsErrors.push('Хэш-тег ' + hashtag + ' должен начинается с символа # (решётка)');
-      }
-
-      if (hashtag === '#') {
-        hashtagsErrors.push('Хеш-тег не может состоять только из одной решётки');
-      }
-
-      if (hashtag.length > MAX_HASHTAG_LENGTH) {
-        hashtagsErrors.push('Максимальная длина хэш-тега ' + hashtag + 'должна быть ' +
-          MAX_HASHTAG_LENGTH + ' символов, включая решётку');
-      }
-
-      for (var i = 0; i < hashtag.length; i++) {
-        if (hashtag.charAt(i + EXCLUDE_FIRST) === '#') {
-          var nonSeparated = true;
-        }
-      }
-
-      if (nonSeparated) {
-        hashtagsErrors.push('Хэш-теги ' + hashtag + ' должны разделяться пробелами');
-      }
-
-    });
-
     for (var j = 0; j < hashtags.length; j++) {
+      checkHashtag(hashtags[j]);
+
       if (hashtags.lastIndexOf(hashtags[j].toLowerCase()) !== j) {
         hashtagsErrors.push('Один и тот же хэш-тег (' + hashtags[j] + ') не может быть использован дважды');
       }
+
+      if (hashtagsErrors.length > 0) {
+        return;
+      }
     }
+
   };
 
   var onSubmitClick = function () {
@@ -105,6 +102,22 @@
     if (isErrors) {
       evt.preventDefault();
     }
+
+    window.upload(new FormData(uploadForm), function () {
+      uploadPreview.classList.add('hidden');
+      resetFormValues();
+    });
+
+    evt.preventDefault();
+  };
+
+  var resetFormValues = function () {
+    window.setStartEffects();
+    window.scaleControl.value = '100';
+    window.effectLevelInput.value = 100;
+    commentArea.value = '';
+    hashtagsField.value = '';
+    uploadInput.value = '';
   };
 
   uploadInput.addEventListener('change', function () {
@@ -114,7 +127,6 @@
   uploadCancelButton.addEventListener('click', function () {
     closeUploadPreview();
     uploadForm.reset();
-    setStartEffects();
   });
 
   commentArea.addEventListener('focus', function () {
@@ -141,5 +153,6 @@
     onSubmit(evt);
   });
 
+  window.uploadPreview = uploadPreview;
   window.ESC_KEYCODE = ESC_KEYCODE;
 })();
