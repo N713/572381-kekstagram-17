@@ -18,7 +18,6 @@
   var effectLevelInput = uploadWindow.querySelector('.effect-level__value');
   var effects = uploadWindow.querySelector('.effects__list');
   var previewEffectsControls = effects.querySelectorAll('.effects__radio');
-  var previewSpans = effects.querySelectorAll('.effects__preview');
   var inputRadioNone = uploadWindow.querySelector('#effect-none');
   var valueMax = effectLevelInput.max;
   var percentFromLevelLineWidth = WIDTH_OF_LEVEL_LINE / valueMax;
