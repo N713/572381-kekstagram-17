@@ -62,6 +62,14 @@
       debounce(function () {
         deletePictures();
         window.renderPhotos(filteredPhotos);
+
+        var pictures = document.querySelectorAll('.picture');
+
+        for (var i = 0; i < pictures.length; i++) {
+          var className = filteredPhotos[i].url.split('/')[1].split('.')[0];
+          pictures[i].classList.add(className + '');
+        }
+
       });
 
       selectButton(filterButton);

@@ -18,12 +18,19 @@
   var effectLevelInput = uploadWindow.querySelector('.effect-level__value');
   var effects = uploadWindow.querySelector('.effects__list');
   var previewEffectsControls = effects.querySelectorAll('.effects__radio');
+  var effectsSpans = effects.querySelectorAll('.effects__preview');
   var inputRadioNone = uploadWindow.querySelector('#effect-none');
   var valueMax = effectLevelInput.max;
   var percentFromLevelLineWidth = WIDTH_OF_LEVEL_LINE / valueMax;
   var currentPreviewInputValue = null;
 
   window.setStartEffects = function () {
+    var previewCurrentClass = previewImage.className;
+
+    if (previewCurrentClass) {
+      previewImage.classList.remove(previewCurrentClass);
+    }
+
     inputRadioNone.checked = 'true';
     previewImage.classList.add('effects__preview--none');
     previewImage.style.filter = 'none';
@@ -65,7 +72,6 @@
   };
 
   var onPreviewControlClick = function (control) {
-
     if (currentPreviewInputValue !== control.value) {
 
       if (currentPreviewInputValue) {
@@ -79,9 +85,33 @@
     }
   };
 
+  var onPreviewEntPress = function (evt) {
+    if (evt.keyCode === 13) {
+      evt.preventDefault();
+
+      var previewClass = evt.target.className.split(' ')[1];
+      var previewCurrentClass = previewImage.className;
+
+      if (previewCurrentClass && previewClass !== '') {
+        previewImage.classList.remove(previewCurrentClass);
+      }
+
+      if (previewClass !== '') {
+        previewImage.classList.add(previewClass);
+        currentPreviewInputValue = previewClass.split('--')[1];
+        changeControl(currentPreviewInputValue);
+        document.querySelector('#effect-' + currentPreviewInputValue).setAttribute('checked', true);
+      }
+    }
+  };
+
   var addPreviewListener = function (effectControl) {
     effectControl.addEventListener('change', function () {
       onPreviewControlClick(effectControl);
+    });
+
+    effectControl.addEventListener('keydown', function (evt) {
+      onPreviewEntPress(evt);
     });
   };
 
@@ -153,7 +183,6 @@
       effectLevelInput.value = parseInt(effectLevelDepth.style.width, 10) / percentFromLevelLineWidth;
 
       switchFilter(currentPreviewInputValue);
-
     };
 
     var onEffectLevelPinMouseUp = function () {
@@ -166,6 +195,7 @@
   });
 
   addPreviewEffectListeners(previewEffectsControls);
+  addPreviewEffectListeners(effectsSpans);
 
   window.uploadWindow = uploadWindow;
   window.previewImage = previewImage;
@@ -173,8 +203,4 @@
   window.scaleControl = scaleControl;
   window.effectLevelInput = effectLevelInput;
 
-  /*
-  var scaleControl = uploadWindow.querySelector('.scale__control--value');
-  var effectLevelInput = uploadWindow.querySelector('.effect-level__value');
-   */
 })();

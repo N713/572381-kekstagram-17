@@ -27,6 +27,7 @@
   };
 
   var closeUploadPreview = function () {
+    uploadForm.reset();
     uploadPreview.classList.add('hidden');
     document.removeEventListener('keydown', onUploadPreviewEscPress);
   };
@@ -91,9 +92,11 @@
 
     if (hashtagsErrors.length > 0) {
       hashtagsField.setCustomValidity(hashtagsErrors.join(', '));
+      hashtagsField.style.outline = '4px solid red';
       isErrors = true;
     } else {
       hashtagsField.setCustomValidity('');
+      hashtagsField.style.outline = '';
       isErrors = false;
     }
   };
@@ -126,7 +129,6 @@
 
   uploadCancelButton.addEventListener('click', function () {
     closeUploadPreview();
-    uploadForm.reset();
   });
 
   commentArea.addEventListener('focus', function () {
