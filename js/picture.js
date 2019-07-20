@@ -3,6 +3,7 @@
 (function () {
 
   var SHIFT = 1;
+  var ENTER_KEYCODE = 13;
   var NUMBER_PHOTOS_TO_SHOW = 5;
 
   var limiter = 2 * NUMBER_PHOTOS_TO_SHOW;
@@ -40,26 +41,14 @@
   };
 
   var onPictureClick = function (evt) {
-    var photoNumber = getPhotoNumberFromSrc(evt) - SHIFT;
+    var photoNumber = parseInt(evt.currentTarget.className.split(' ')[1], 10) - SHIFT;
     openBigPicture(photoNumber);
   };
 
   var onPictureEntPress = function (evt) {
-    if (evt.keyCode === 13) {
-      evt.preventDefault();
-      evt.stopPropagation();
-
-      var photoNumber = parseInt(evt.target.className.split(' ')[1], 10) - SHIFT;
-      openBigPicture(photoNumber);
+    if (evt.keyCode === ENTER_KEYCODE) {
+      onPictureClick(evt);
     }
-  };
-
-  var getPhotoNumberFromSrc = function (evt) {
-    var src = evt.target.src;
-    var srcDash = src.lastIndexOf('/') + SHIFT;
-    var srcDot = src.lastIndexOf('.');
-
-    return Number(src.slice(srcDash, srcDot));
   };
 
   var cleanOldComments = function () {
