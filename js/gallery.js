@@ -6,6 +6,15 @@
 
   window.photos = [];
 
+  var addClassToPicture = function (picturesArray) {
+    var pictures = document.querySelectorAll('.picture');
+
+    for (var i = 0; i < pictures.length; i++) {
+      var pictureClass = picturesArray[i].url.split('/')[1].split('.')[0];
+      pictures[i].classList.add(pictureClass + '');
+    }
+  };
+
   var addPictures = function (photosData) {
     var fragment = document.createDocumentFragment();
 
@@ -18,6 +27,7 @@
 
   window.renderPhotos = function (photosData) {
     picturesSection.appendChild(addPictures(photosData));
+    addClassToPicture(photosData);
   };
 
   var activateFilters = function (photosData) {
