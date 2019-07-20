@@ -104,7 +104,7 @@
         document.querySelector('#effect-' + currentPreviewInputValue).setAttribute('checked', true);
       }
     }
-  }
+  };
 
   var addPreviewListener = function (effectControl) {
     effectControl.addEventListener('change', function () {
