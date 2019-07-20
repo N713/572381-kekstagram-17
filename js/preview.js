@@ -72,7 +72,6 @@
   };
 
   var onPreviewControlClick = function (control) {
-
     if (currentPreviewInputValue !== control.value) {
 
       if (currentPreviewInputValue) {
@@ -184,7 +183,6 @@
       effectLevelInput.value = parseInt(effectLevelDepth.style.width, 10) / percentFromLevelLineWidth;
 
       switchFilter(currentPreviewInputValue);
-
     };
 
     var onEffectLevelPinMouseUp = function () {

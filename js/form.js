@@ -27,6 +27,7 @@
   };
 
   var closeUploadPreview = function () {
+    uploadForm.reset();
     uploadPreview.classList.add('hidden');
     document.removeEventListener('keydown', onUploadPreviewEscPress);
   };
@@ -128,7 +129,6 @@
 
   uploadCancelButton.addEventListener('click', function () {
     closeUploadPreview();
-    uploadForm.reset();
   });
 
   commentArea.addEventListener('focus', function () {

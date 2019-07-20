@@ -68,7 +68,6 @@
 
       bigPictureComments.appendChild(render);
     });
-
   };
 
   var hideComments = function () {
