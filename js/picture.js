@@ -27,16 +27,31 @@
     picture.querySelector('.picture__likes').textContent = photoArrayElement.likes;
 
     picture.addEventListener('click', onPictureClick);
+    picture.addEventListener('keydown', onPictureEntPress);
 
     return picture;
   };
 
-  var onPictureClick = function (evt) {
-    commentsLoader.classList.toggle('hidden', false);
-    bigPicture.classList.remove('hidden');
-    document.querySelector('body').classList.add('modal-open');
+  var openBigPicture = function (pictureNumber) {
+    cleanOldComments();
+    openPicture(pictureNumber);
+    renderComments(pictureNumber);
+    hideComments();
+  };
 
-    openBigPicture(evt);
+  var onPictureClick = function (evt) {
+    var photoNumber = getPhotoNumberFromSrc(evt) - SHIFT;
+    openBigPicture(photoNumber);
+  };
+
+  var onPictureEntPress = function (evt) {
+    if (evt.keyCode === 13) {
+      evt.preventDefault();
+      evt.stopPropagation();
+
+      var photoNumber = parseInt(evt.target.className.split(' ')[1], 10) - SHIFT;
+      openBigPicture(photoNumber);
+    }
   };
 
   var getPhotoNumberFromSrc = function (evt) {
@@ -78,23 +93,26 @@
     }
   };
 
-  var openBigPicture = function (evt) {
-    cleanOldComments();
-    var photoNumber = getPhotoNumberFromSrc(evt) - SHIFT;
+  var openPicture = function (pictureNumber) {
+    commentsLoader.classList.toggle('hidden', false);
+    bigPicture.classList.remove('hidden');
+    document.querySelector('body').classList.add('modal-open');
 
-    bigPictureImage.src = window.photos[photoNumber].url;
-    bigPictureLikes.textContent = window.photos[photoNumber].likes;
-    bigPictureCommentsCount.textContent = window.photos[photoNumber].comments.length;
-    bigPictureDescription.textContent = window.photos[photoNumber].description;
+    bigPictureImage.src = window.photos[pictureNumber].url;
+    bigPictureLikes.textContent = window.photos[pictureNumber].likes;
+    bigPictureCommentsCount.textContent = window.photos[pictureNumber].comments.length;
+    bigPictureDescription.textContent = window.photos[pictureNumber].description;
     commentsShowed.textContent = NUMBER_PHOTOS_TO_SHOW + '';
 
-    renderComments(photoNumber);
-    hideComments();
+    if (parseInt(bigPictureCommentsCount.textContent, 10) <= NUMBER_PHOTOS_TO_SHOW) {
+      commentsShowed.textContent = bigPictureCommentsCount.textContent;
+      commentsLoader.classList.add('hidden');
+    }
   };
 
   var closeBigPicture = function () {
     bigPicture.classList.add('hidden');
-    var limiter = 2 * NUMBER_PHOTOS_TO_SHOW;
+    limiter = 2 * NUMBER_PHOTOS_TO_SHOW;
 
     document.addEventListener('keydown', function (evt) {
       if (evt.keyCode === window.ESC_KEYCODE) {

@@ -67,7 +67,6 @@
 
         for (var i = 0; i < pictures.length; i++) {
           var a = filteredPhotos[i].url.split('/')[1].split('.')[0];
-          console.log(a);
           pictures[i].classList.add(a + '');
         }
 
