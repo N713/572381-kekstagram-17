@@ -33,16 +33,13 @@
     return picture;
   };
 
-  var openBigPicture = function (pictureNumber) {
-    cleanOldComments();
-    openPicture(pictureNumber);
-    renderComments(pictureNumber);
-    hideComments();
-  };
-
   var onPictureClick = function (evt) {
     var photoNumber = parseInt(evt.currentTarget.className.split(' ')[1], 10) - SHIFT;
-    openBigPicture(photoNumber);
+
+    cleanOldComments();
+    openPicture(photoNumber);
+    renderComments(photoNumber);
+    hideComments();
   };
 
   var onPictureEntPress = function (evt) {
