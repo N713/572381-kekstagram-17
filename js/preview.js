@@ -31,7 +31,7 @@
       previewImage.classList.remove(previewCurrentClass);
     }
 
-    inputRadioNone.checked = 'true';
+    inputRadioNone.checked = true;
     previewImage.classList.add('effects__preview--none');
     previewImage.style.filter = 'none';
     previewImage.style.transform = 'scale(1)';
