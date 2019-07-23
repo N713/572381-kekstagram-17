@@ -27,7 +27,7 @@
   window.setStartEffects = function () {
     var previewCurrentClass = previewImage.className;
 
-    if (previewCurrentClass) {
+    if (previewCurrentClass && previewCurrentClass !== '') {
       previewImage.classList.remove(previewCurrentClass);
     }
 
@@ -74,7 +74,7 @@
   var onPreviewControlClick = function (control) {
     if (currentPreviewInputValue !== control.value) {
 
-      if (currentPreviewInputValue) {
+      if (currentPreviewInputValue && currentPreviewInputValue !== '') {
         previewImage.classList.remove('effects__preview--' + currentPreviewInputValue);
       }
 

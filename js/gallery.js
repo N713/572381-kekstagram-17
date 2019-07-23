@@ -36,11 +36,11 @@
     window.renderPhotos(window.photos);
   };
 
-  picturesSection.addEventListener('keydown', function (evt) {
+  window.onPictureEscPress = function (evt) {
     if (evt.keyCode === window.ESC_KEYCODE) {
       window.bigPicture.classList.add('hidden');
     }
-  });
+  };
 
   window.picturesSection = picturesSection;
   window.load(activateFilters, window.onErrorHandler);

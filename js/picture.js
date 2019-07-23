@@ -93,19 +93,30 @@
       commentsShowed.textContent = bigPictureCommentsCount.textContent;
       commentsLoader.classList.add('hidden');
     }
+
+    window.picturesSection.addEventListener('keydown', window.onPictureEscPress);
+    document.addEventListener('keydown', onPictureEscPress);
+  };
+
+  var removeModalClassAndEscPress = function () {
+    window.picturesSection.removeEventListener('keydown', window.onPictureEscPress);
+    document.querySelector('body').classList.remove('modal-open');
+    document.removeEventListener('keydown', onPictureEscPress);
+  };
+
+  var onPictureEscPress = function (evt) {
+    if (evt.keyCode === window.ESC_KEYCODE) {
+      bigPicture.classList.add('hidden');
+    }
+
+    removeModalClassAndEscPress();
   };
 
   var closeBigPicture = function () {
     bigPicture.classList.add('hidden');
     limiter = 2 * NUMBER_PHOTOS_TO_SHOW;
 
-    document.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === window.ESC_KEYCODE) {
-        bigPicture.classList.add('hidden');
-      }
-    });
-
-    document.querySelector('body').classList.remove('modal-open');
+    removeModalClassAndEscPress();
   };
 
   var showNextComments = function () {
@@ -128,13 +139,8 @@
     limiter += NUMBER_PHOTOS_TO_SHOW;
   };
 
-  bigPictureCloseButton.addEventListener('click', function () {
-    closeBigPicture();
-  });
-
-  commentsLoader.addEventListener('click', function () {
-    showNextComments();
-  });
+  bigPictureCloseButton.addEventListener('click', closeBigPicture);
+  commentsLoader.addEventListener('click', showNextComments);
 
   window.bigPicture = bigPicture;
 

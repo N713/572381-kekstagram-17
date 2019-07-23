@@ -23,13 +23,13 @@
   var openUploadPreview = function () {
     uploadPreview.classList.remove('hidden');
     window.effectLevel.classList.add('hidden');
-    document.addEventListener('keydown', onUploadPreviewEscPress);
+    document.addEventListener('keydown', window.onUploadPreviewEscPress);
   };
 
   var closeUploadPreview = function () {
     uploadForm.reset();
     uploadPreview.classList.add('hidden');
-    document.removeEventListener('keydown', onUploadPreviewEscPress);
+    document.removeEventListener('keydown', window.onUploadPreviewEscPress);
   };
 
   var onUploadInputChange = function () {
@@ -37,10 +37,12 @@
     openUploadPreview();
   };
 
-  var onUploadPreviewEscPress = function (evt) {
+  window.onUploadPreviewEscPress = function (evt) {
     if (evt.keyCode === ESC_KEYCODE && !isCommentFocused && !isHashtagsFocused) {
       closeUploadPreview();
     }
+
+    document.removeEventListener('keydown', window.onUploadPreviewEscPress);
   };
 
   var checkHashtag = function (hashtag) {
