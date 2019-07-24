@@ -25,16 +25,10 @@
   var currentPreviewInputValue = null;
 
   window.setStartEffects = function () {
-    var previewCurrentClass = previewImage.className;
-
-    if (previewCurrentClass) {
-      previewImage.classList.remove(previewCurrentClass);
-    }
-
-    inputRadioNone.checked = 'true';
-    previewImage.classList.add('effects__preview--none');
+    inputRadioNone.checked = true;
     previewImage.style.filter = 'none';
     previewImage.style.transform = 'scale(1)';
+    previewImage.className = 'effects__preview--none';
   };
 
   var increaseScaleValue = function () {
@@ -74,7 +68,7 @@
   var onPreviewControlClick = function (control) {
     if (currentPreviewInputValue !== control.value) {
 
-      if (currentPreviewInputValue) {
+      if (currentPreviewInputValue && currentPreviewInputValue !== '') {
         previewImage.classList.remove('effects__preview--' + currentPreviewInputValue);
       }
 
