@@ -77,6 +77,7 @@
     document.addEventListener('click', onPopupFreeClick);
     document.addEventListener('keydown', escpress);
     document.removeEventListener('keydown', window.onUploadPreviewEscPress);
+    window.uploadForm.removeEventListener('submit', window.onSubmit);
   };
 
   window.main = main;

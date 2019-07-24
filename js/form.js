@@ -24,12 +24,16 @@
     uploadPreview.classList.remove('hidden');
     window.effectLevel.classList.add('hidden');
     document.addEventListener('keydown', window.onUploadPreviewEscPress);
+    uploadCancelButton.addEventListener('click', closeUploadPreview);
+    submitButton.addEventListener('click', onSubmitClick);
+    uploadForm.addEventListener('submit', window.onSubmit);
   };
 
   var closeUploadPreview = function () {
     uploadForm.reset();
     uploadPreview.classList.add('hidden');
     document.removeEventListener('keydown', window.onUploadPreviewEscPress);
+    uploadForm.removeEventListener('submit', window.onSubmit);
   };
 
   var onUploadInputChange = function () {
@@ -43,6 +47,7 @@
     }
 
     document.removeEventListener('keydown', window.onUploadPreviewEscPress);
+    uploadForm.removeEventListener('submit', window.onSubmit);
   };
 
   var checkHashtag = function (hashtag) {
@@ -103,7 +108,7 @@
     }
   };
 
-  var onSubmit = function (evt) {
+  window.onSubmit = function (evt) {
     if (isErrors) {
       evt.preventDefault();
     }
@@ -125,14 +130,6 @@
     uploadInput.value = '';
   };
 
-  uploadInput.addEventListener('change', function () {
-    onUploadInputChange();
-  });
-
-  uploadCancelButton.addEventListener('click', function () {
-    closeUploadPreview();
-  });
-
   commentArea.addEventListener('focus', function () {
     isCommentFocused = true;
   });
@@ -149,14 +146,9 @@
     isHashtagsFocused = false;
   });
 
-  submitButton.addEventListener('click', function () {
-    onSubmitClick();
-  });
-
-  uploadForm.addEventListener('submit', function (evt) {
-    onSubmit(evt);
-  });
+  uploadInput.addEventListener('change', onUploadInputChange);
 
   window.uploadPreview = uploadPreview;
+  window.uploadForm = uploadForm;
   window.ESC_KEYCODE = ESC_KEYCODE;
 })();
