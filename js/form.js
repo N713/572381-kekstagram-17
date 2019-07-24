@@ -31,6 +31,7 @@
 
   var closeUploadPreview = function () {
     uploadForm.reset();
+    window.setStartEffects();
     uploadPreview.classList.add('hidden');
     document.removeEventListener('keydown', window.onUploadPreviewEscPress);
     uploadForm.removeEventListener('submit', window.onSubmit);

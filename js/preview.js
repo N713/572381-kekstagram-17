@@ -25,16 +25,10 @@
   var currentPreviewInputValue = null;
 
   window.setStartEffects = function () {
-    var previewCurrentClass = previewImage.className;
-
-    if (previewCurrentClass && previewCurrentClass !== '') {
-      previewImage.classList.remove(previewCurrentClass);
-    }
-
     inputRadioNone.checked = true;
-    previewImage.classList.add('effects__preview--none');
     previewImage.style.filter = 'none';
     previewImage.style.transform = 'scale(1)';
+    previewImage.className = 'effects__preview--none';
   };
 
   var increaseScaleValue = function () {
