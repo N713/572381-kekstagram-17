@@ -94,7 +94,7 @@
         previewImage.classList.add(previewClass);
         currentPreviewInputValue = previewClass.split('--')[1];
         changeControl(currentPreviewInputValue);
-        document.querySelector('#effect-' + currentPreviewInputValue).setAttribute('checked', true);
+        document.querySelector('#effect-' + currentPreviewInputValue).checked = true;
       }
     }
   };

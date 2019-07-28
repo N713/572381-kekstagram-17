@@ -23,18 +23,13 @@
   var openUploadPreview = function () {
     uploadPreview.classList.remove('hidden');
     window.effectLevel.classList.add('hidden');
-    document.addEventListener('keydown', window.onUploadPreviewEscPress);
-    uploadCancelButton.addEventListener('click', closeUploadPreview);
-    submitButton.addEventListener('click', onSubmitClick);
-    uploadForm.addEventListener('submit', window.onSubmit);
+    document.addEventListener('keydown', onUploadPreviewEscPress);
   };
 
   var closeUploadPreview = function () {
     uploadForm.reset();
-    window.setStartEffects();
     uploadPreview.classList.add('hidden');
-    document.removeEventListener('keydown', window.onUploadPreviewEscPress);
-    uploadForm.removeEventListener('submit', window.onSubmit);
+    document.removeEventListener('keydown', onUploadPreviewEscPress);
   };
 
   var onUploadInputChange = function () {
@@ -42,13 +37,10 @@
     openUploadPreview();
   };
 
-  window.onUploadPreviewEscPress = function (evt) {
+  var onUploadPreviewEscPress = function (evt) {
     if (evt.keyCode === ESC_KEYCODE && !isCommentFocused && !isHashtagsFocused) {
       closeUploadPreview();
     }
-
-    document.removeEventListener('keydown', window.onUploadPreviewEscPress);
-    uploadForm.removeEventListener('submit', window.onSubmit);
   };
 
   var checkHashtag = function (hashtag) {
@@ -94,12 +86,12 @@
 
   };
 
-  var onSubmitClick = function () {
+  var onSubmitButtonClick = function () {
     hashtagsErrors.length = 0;
     checkHashtagsErrors();
 
     if (hashtagsErrors.length > 0) {
-      hashtagsField.setCustomValidity(hashtagsErrors.join(', '));
+      hashtagsField.setCustomValidity(hashtagsErrors[0]);
       hashtagsField.style.outline = '4px solid red';
       isErrors = true;
     } else {
@@ -109,17 +101,18 @@
     }
   };
 
-  window.onSubmit = function (evt) {
-    if (isErrors) {
-      evt.preventDefault();
+  var onSubmit = function (evt) {
+    evt.preventDefault();
+
+    if (!isErrors) {
+      window.upload(new FormData(uploadForm), function () {
+        uploadPreview.classList.add('hidden');
+        resetFormValues();
+      });
+
+      document.removeEventListener('keydown', onUploadPreviewEscPress);
     }
 
-    window.upload(new FormData(uploadForm), function () {
-      uploadPreview.classList.add('hidden');
-      resetFormValues();
-    });
-
-    evt.preventDefault();
   };
 
   var resetFormValues = function () {
@@ -130,6 +123,14 @@
     hashtagsField.value = '';
     uploadInput.value = '';
   };
+
+  uploadInput.addEventListener('change', function () {
+    onUploadInputChange();
+  });
+
+  uploadCancelButton.addEventListener('click', function () {
+    closeUploadPreview();
+  });
 
   commentArea.addEventListener('focus', function () {
     isCommentFocused = true;
@@ -147,9 +148,16 @@
     isHashtagsFocused = false;
   });
 
-  uploadInput.addEventListener('change', onUploadInputChange);
+  submitButton.addEventListener('click', function () {
+    onSubmitButtonClick();
+  });
+
+  uploadForm.addEventListener('submit', function (evt) {
+    onSubmit(evt);
+  });
 
   window.uploadPreview = uploadPreview;
   window.uploadForm = uploadForm;
   window.ESC_KEYCODE = ESC_KEYCODE;
+
 })();

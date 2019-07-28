@@ -10,22 +10,23 @@
   window.onSuccessEscPress = function (evt) {
     if (evt.keyCode === window.ESC_KEYCODE && main.contains(succesTemplate)) {
       main.removeChild(succesTemplate);
-    }
 
-    document.removeEventListener('keydown', window.onSuccessEscPress);
-    document.removeEventListener('click', onPopupFreeClick);
+      document.removeEventListener('keydown', window.onSuccessEscPress);
+      document.removeEventListener('click', onPopupFreeClick);
+    }
   };
 
   window.onErrorEscPress = function (evt) {
     if (evt.keyCode === window.ESC_KEYCODE && main.contains(errorTemplate)) {
       main.removeChild(errorTemplate);
-    }
 
-    document.removeEventListener('keydown', window.onErrorEscPress);
-    document.removeEventListener('click', onPopupFreeClick);
+      document.removeEventListener('keydown', window.onErrorEscPress);
+      document.removeEventListener('click', onPopupFreeClick);
+    }
   };
 
   var onPopupFreeClick = function () {
+
     if (main.contains(succesTemplate)) {
       main.lastChild.remove();
       document.removeEventListener('keydown', window.onSuccessEscPress);
@@ -42,19 +43,19 @@
   var onSucessButtonClick = function () {
     if (main.contains(succesTemplate)) {
       main.removeChild(succesTemplate);
-    }
 
-    document.removeEventListener('keydown', window.onSuccessEscPress);
-    document.removeEventListener('click', onSucessButtonClick);
+      document.removeEventListener('keydown', window.onSuccessEscPress);
+      document.removeEventListener('click', onSucessButtonClick);
+    }
   };
 
   var onErrorButtonClick = function () {
     if (main.contains(errorTemplate)) {
       main.removeChild(errorTemplate);
-    }
 
-    document.removeEventListener('keydown', window.onErrorEscPress);
-    document.removeEventListener('click', onErrorButtonClick);
+      document.removeEventListener('keydown', window.onErrorEscPress);
+      document.removeEventListener('click', onErrorButtonClick);
+    }
   };
 
   window.addPopupHandlers = function (popup, escpress) {
@@ -77,7 +78,6 @@
     document.addEventListener('click', onPopupFreeClick);
     document.addEventListener('keydown', escpress);
     document.removeEventListener('keydown', window.onUploadPreviewEscPress);
-    window.uploadForm.removeEventListener('submit', window.onSubmit);
   };
 
   window.main = main;

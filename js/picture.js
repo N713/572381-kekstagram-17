@@ -107,15 +107,13 @@
   var onPictureEscPress = function (evt) {
     if (evt.keyCode === window.ESC_KEYCODE) {
       bigPicture.classList.add('hidden');
+      removeModalClassAndEscPress();
     }
-
-    removeModalClassAndEscPress();
   };
 
   var closeBigPicture = function () {
     bigPicture.classList.add('hidden');
     limiter = 2 * NUMBER_PHOTOS_TO_SHOW;
-
     removeModalClassAndEscPress();
   };
 
