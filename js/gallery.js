@@ -36,12 +36,6 @@
     window.renderPhotos(window.photos);
   };
 
-  window.onPictureEscPress = function (evt) {
-    if (evt.keyCode === window.ESC_KEYCODE) {
-      window.bigPicture.classList.add('hidden');
-    }
-  };
-
   window.picturesSection = picturesSection;
   window.load(activateFilters, window.onErrorHandler);
 
