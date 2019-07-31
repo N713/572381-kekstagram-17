@@ -112,7 +112,6 @@
 
       document.removeEventListener('keydown', onUploadPreviewEscPress);
     }
-
   };
 
   var resetFormValues = function () {
